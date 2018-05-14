@@ -8,6 +8,14 @@ var ERR = map[string]interface{}{
 	"NoId":"005"
 }
 
+
+var STATUS = map[string]string{
+	"inModule":"inModule",
+	"outModule":"outModule",
+	"butcher":"butcher",
+	"freeze":"freeze"
+}
+
 const (
 	//下划线
 	ULINE = "_"
