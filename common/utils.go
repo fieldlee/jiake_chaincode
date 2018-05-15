@@ -1,9 +1,15 @@
 package common
 
 import (
+	"bytes"
+	"crypto/x509"
 	"encoding/json"
+	"encoding/pem"
+	"fmt"
 	"reflect"
 	"strings"
+
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
 func Json2map(str string) (s map[string]interface{}, err error) {
@@ -45,5 +51,36 @@ func RemoveDuplicatesAndEmpty(a []string) (ret []string) {
 		}
 		ret = append(ret, a[i])
 	}
+	return
+}
+
+func GetUserFromCertification(stub shim.ChaincodeStubInterface) (username string) {
+	userBytes, err := stub.GetCreator()
+	if err != nil {
+		return
+	}
+	certStart := bytes.IndexAny(userBytes, "-----") // Devin:I don't know why sometimes -----BEGIN is invalid, so I use -----
+	if certStart == -1 {
+		fmt.Errorf("No certificate found")
+		return
+	}
+	certText := userBytes[certStart:]
+
+	bl, _ := pem.Decode(certText)
+	if bl == nil {
+		fmt.Errorf("Could not decode the PEM structure")
+		return
+	}
+	fmt.Println(string(certText))
+	cert, err := x509.ParseCertificate(bl.Bytes)
+	if err != nil {
+		fmt.Errorf("ParseCertificate failed")
+		return
+	}
+	fmt.Println(cert)
+
+	username = cert.Subject.CommonName
+	fmt.Println("Name:" + username)
+
 	return
 }

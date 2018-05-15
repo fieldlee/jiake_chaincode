@@ -1,19 +1,24 @@
 package common
 
 var ERR = map[string]interface{}{
-	"NORegister":"001",
-	"HadRegister":"002",
-	"NOOutput":"003",
-	"HadOutput":"004",
-	"NoId":"005"
+	"NONE":        "000",
+	"NOREGISTER":  "001",
+	"HADREGISTER": "002",
+	"NOOUTPUT":    "003",
+	"HADOUTPUT":   "004",
+	"NOID":        "005",
+	"STATUSERR":   "006",
+	"CHANGEERR":   "007",
+	"CHAINERR":    "099",
 }
 
-
 var STATUS = map[string]string{
-	"inModule":"inModule",
-	"outModule":"outModule",
-	"butcher":"butcher",
-	"freeze":"freeze"
+	"INModule":  "inModule",
+	"OUTModule": "outModule",
+	"BUTCHER":   "butcher",
+	"FREEZE":    "freeze",
+	"BLOCKED":   "blocked",
+	"LOST":      "lost",
 }
 
 const (
@@ -25,18 +30,8 @@ const (
 	SYSTEM = "None"
 	//产品所属KEY
 	PRODUCT_OWNER = "PRODUCT_OWNER"
-	//交易类型（产品注册）
-	REGISTER = "01"
-	//交易类型(权属变更)
-	CHANGE_OWNER = "02"
-	//交易类型(确认权属变更)
-	CONFIRM_CHANGE_OWNER = "03"
-	//交易类型(产品信息变更)
-	CHANGE_PRODUCT = "04"
-	//交易类型(产品销毁)
-	DESTROY = "99"
 	//产品信息KEY
 	PRODUCT_INFO = "PRODUCT_INFO"
-	//产品ID
-	PRODUCT_ID = "productId"
+	// 产品交易信息
+	PRODUCT_TRANSFER = "PRODUCT_TRANSFER"
 )

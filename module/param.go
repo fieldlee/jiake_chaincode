@@ -58,6 +58,15 @@ type OutputParam struct {
 	MapPosition string `json:"mapPosition"` //地理位置
 }
 
+// 灭尸
+type LostParam struct {
+	ProductId   string `json:"productId"`
+	Operation   string `json:"operation"`   //灭尸类型
+	Operator    string `json:"operator"`    //灭尸人
+	LostTime    uint64 `json:"lostTime"`    //灭尸时间
+	MapPosition string `json:"mapPosition"` //地理位置
+}
+
 // 屠宰结构
 type ButcherParam struct {
 	ProductId   string `json:"productId"`
