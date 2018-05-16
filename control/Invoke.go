@@ -27,6 +27,8 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.Feed(stub,args)
 	} else if lowFuncation == "vaccine" { //防疫
 		return t.Vaccine(stub,args)
+	}else if  lowFuncation == "save" { //救治
+		return t.Save(stub,args)
 	} else if lowFuncation == "output" { //出栏
 		return t.Output(stub,args)
 	} else if lowFuncation == "exam" { //检疫
@@ -146,6 +148,28 @@ func (t *ProductTrace) Exam(stub shim.ChaincodeStubInterface, args []string) pee
 			returnInfo.Info = ""
 		}else{
 			return service.Exam(stub,paramList)
+		}
+		
+	}else{
+		returnInfo.Status = false
+		returnInfo.Info = ""
+	}
+	jsonreturn , err := json.Marshal(returnInfo)
+	return shim.Success(string(jsonreturn[:]))
+}
+
+/**救治**/
+func (t *ProductTrace) Save(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	log.Logger.Info("##############调用Save接口开始###############")
+	returnInfo := ReturnInfo{}
+	if len(args)>=1 {
+		var paramList []module.SaveParam
+		err := json.Unmarshal([]byte(args),&paramList)
+		if err != nil {
+			returnInfo.Status = false
+			returnInfo.Info = ""
+		}else{
+			return service.Save(stub,paramList)
 		}
 		
 	}else{
