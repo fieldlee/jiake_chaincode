@@ -405,7 +405,7 @@ func goExam(stub shim.ChaincodeStubInterface, param module.ExamParam, examChan c
 	product.ExamMapPosition = param.MapPosition
 	product.ExamOperation = param.Operation
 	product.ExamTime = param.ExamTime
-	product.ExamResult = param.ExamResult
+	product.ExamConsequence = param.ExamConsequence
 	product.ExamOperator = param.Operator
 	// modify status 待宰状态
 	product.Status = common.STATUS["BUTCHER"]

@@ -34,24 +34,25 @@ type VaccineParam struct {
 
 // 救治结构
 type SaveParam struct {
-	ProductId   string `json:"productId"`
-	Operation   string `json:"operation"`   //救治类型
-	Operator    string `json:"operator"`    //救治人
-	SaveName    string `json:"saveName"`    //救治的药品名称
-	SaveType    string `json:"saveType"`    //救治项目
-	SaveNumber  string `json:"saveNumber"`  //救治药品的数量
-	SaveTime    uint64 `json:"saveTime"`    //救治时间
-	MapPosition string `json:"mapPosition"` // 地理位置
+	ProductId       string `json:"productId"`
+	Operation       string `json:"operation"`       //救治类型
+	Operator        string `json:"operator"`        //救治人
+	SaveName        string `json:"saveName"`        //救治的药品名称
+	SaveType        string `json:"saveType"`        //救治项目
+	SaveNumber      string `json:"saveNumber"`      //救治药品的数量
+	SaveConsequence string `json:"saveConsequence"` //救治结果
+	SaveTime        uint64 `json:"saveTime"`        //救治时间
+	MapPosition     string `json:"mapPosition"`     // 地理位置
 }
 
 // 检疫结构
 type ExamParam struct {
-	ProductId   string `json:"productId"`
-	Operation   string `json:"operation"`   //检疫类型
-	Operator    string `json:"operator"`    //检疫人
-	ExamTime    string `json:"examTime"`    //防疫时间
-	ExamResult  string `json:"examResult"`  //防疫结果
-	MapPosition string `json:"mapPosition"` // 地理位置
+	ProductId       string `json:"productId"`
+	Operation       string `json:"operation"`       //检疫类型
+	Operator        string `json:"operator"`        //检疫人
+	ExamTime        string `json:"examTime"`        //防疫时间
+	ExamConsequence string `json:"examConsequence"` //防疫结果
+	MapPosition     string `json:"mapPosition"`     // 地理位置
 }
 
 // 灭尸结构
