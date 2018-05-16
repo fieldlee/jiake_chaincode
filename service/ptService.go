@@ -2,9 +2,9 @@ package service
 
 import (
 	"encoding/json"
-	"jiake_chaincode/module"
-	"jiake_chaincode/log"
-	"jiake_chaincode/common"
+	"jiakechaincode/module"
+	"jiakechaincode/log"
+	"jiakechaincode/common"
 	"sync"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
@@ -168,6 +168,33 @@ func Exam(stub shim.ChaincodeStubInterface,paramList []module.ExamParam)peer.Res
 	return shim.Success(string(jsonReturn[:]))
 }
 
+/**检疫**/
+func Exam(stub shim.ChaincodeStubInterface,paramList []module.SaveParam)peer.Response  {
+	wg.Add(len(paramList)) //添加队列数
+	saveChan := make(chan ChanInfo, len(paramList))
+	for _, v := range paramList {
+		go goSave(stub, v,saveChan)
+	}
+// 	获得chan 返回的值
+	returnError := ReturnErrorInfo{}
+	for i,_ := range paramList {
+		tChan := ChanInfo{}
+		tChan <- saveChan //get Channel return value
+		if tChan.Status == false {
+			returnError.ErrorList = append(returnError.ErrorList,tChan) 
+		}
+	}
+	close(saveChan)
+	wg.Wait()
+	if len(returnError.ErrorList)>=1 {
+		returnError.Status = false
+	}else{
+		returnError.Status = true
+	}
+	jsonReturn,err := json.Marshal(returnError)
+	return shim.Success(string(jsonReturn[:]))
+}
+
 /**屠宰**/
 func Butcher(stub shim.ChaincodeStubInterface,paramList []module.ButcherParam)peer.Response{
 	wg.Add(len(paramList)) //添加队列数
@@ -241,13 +268,13 @@ func QueryHistoryByProduct(stub shim.ChaincodeStubInterface,param module.QueryPa
 		return shim.Error(err.Error())
 	}
 	defer historys.Close()
-	results := make([]module.ProductInfo, 0)
+	results := make([]module.Product, 0)
 	for historys.HasNext() {
 		result, err := historys.Next()
 		if err != nil {
 			return shim.Error(err.Error())
 		}
-		product := module.ProductInfo{}
+		product := module.Product{}
 
 		err = json.Unmarshal(result.Value, &product)
 		if err != nil {
@@ -271,13 +298,13 @@ func QueryBatchByProduct(stub shim.ChaincodeStubInterface,param module.BatchPara
 		return shim.Error(err.Error())
 	}
 	defer queryResults.Close()
-	results := make([]module.ProductInfo, 0)
+	results := make([]module.Product, 0)
 	for queryResults.HasNext(){
 		result , err := queryResults.Next()
 		if err != nil {
 			return shim.Error(err.Error())
 		}
-		product := module.ProductInfo{}
+		product := module.Product{}
 		err = json.Unmarshal(result.Value, &product)
 		if err != nil {
 			return shim.Error(err.Error())
@@ -294,7 +321,7 @@ func QueryBatchByProduct(stub shim.ChaincodeStubInterface,param module.BatchPara
 
 /**查询交易**/
 func QueryByTX(stub shim.ChaincodeStubInterface,param module.QueryTxParam)peer.Response{
-	queryString := fmt.Sprintf("{\"selector\": {\"_id\": {\"$regex\": \"%s\"},\"$or\":[{\"txId\":\"%s\"},{\"outputTxId\":\"%s\"},{\"lostTxId\":\"%s\"},{\"examTxId\":\"%s\"},{\"butcherTxId\":\"%s\"},{\"feedList.txId\":\"%s\"},{\"vaccineList.txId\":\"%s\"}]},\"limit\":\"%d\"}", common.PRODUCT_INFO,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,5000)
+	queryString := fmt.Sprintf("{\"selector\": {\"_id\": {\"$regex\": \"%s\"},\"$or\":[{\"txId\":\"%s\"},{\"outputTxId\":\"%s\"},{\"lostTxId\":\"%s\"},{\"examTxId\":\"%s\"},{\"butcherTxId\":\"%s\"},{\"feedList.txId\":\"%s\"},{\"vaccineList.txId\":\"%s\"},{\"saveList.txId\":\"%s\"}]},\"limit\":\"%d\"}", common.PRODUCT_INFO,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,param.TxId,5000)
 
 	queryResults , err := stub.GetQueryResult(queryString)
 	
@@ -302,13 +329,13 @@ func QueryByTX(stub shim.ChaincodeStubInterface,param module.QueryTxParam)peer.R
 		return shim.Error(err.Error())
 	}
 	defer queryResults.Close()
-	results := make([]module.ProductInfo, 0)
+	results := make([]module.Product, 0)
 	for queryResults.HasNext(){
 		result , err := queryResults.Next()
 		if err != nil {
 			return shim.Error(err.Error())
 		}
-		product := module.ProductInfo{}
+		product := module.Product{}
 		err = json.Unmarshal(result.Value, &product)
 		if err != nil {
 			return shim.Error(err.Error())

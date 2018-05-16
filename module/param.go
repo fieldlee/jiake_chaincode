@@ -2,7 +2,6 @@ package module
 
 type RegitserParam struct {
 	ProductId   string `json:"productId"`
-	ProductName string `json:"productName"`
 	Operation   string `json:"operation"`
 	Operator    string `json:"operator"`
 	CreateTime  uint64 `json:"createTime"`
@@ -16,17 +15,32 @@ type FeedParam struct {
 	ProductId   string `json:"productId"`
 	Operation   string `json:"operation"`
 	Operator    string `json:"operator"`
+	FeedName    string `json:"feedName"`    //喂养的饲料
 	FeedTime    uint64 `json:"feedTime"`    //喂养的时间
 	MapPosition string `json:"mapPosition"` // 喂养地理位置
 }
 
 // 防疫结构
 type VaccineParam struct {
+	ProductId     string `json:"productId"`
+	Operation     string `json:"operation"`     //防疫类型
+	Operator      string `json:"operator"`      //防疫人
+	VaccineName   string `json:"vaccineName"`   //防疫的药品名称
+	VaccineType   string `json:"vaccineType"`   //防疫项目
+	VaccineNumber string `json:"vaccineNumber"` //防疫药品的数量
+	VaccineTime   uint64 `json:"vaccineTime"`   //防疫时间
+	MapPosition   string `json:"mapPosition"`   // 地理位置
+}
+
+// 救治结构
+type SaveParam struct {
 	ProductId   string `json:"productId"`
-	Operation   string `json:"operation"` //防疫类型
-	Operator    string `json:"operator"`  //防疫人
-	VaccineName string `json:"vaccineName"`
-	VaccineTime uint64 `json:"vaccineTime"` //防疫时间
+	Operation   string `json:"operation"`   //救治类型
+	Operator    string `json:"operator"`    //救治人
+	SaveName    string `json:"saveName"`    //救治的药品名称
+	SaveType    string `json:"saveType"`    //救治项目
+	SaveNumber  string `json:"saveNumber"`  //救治药品的数量
+	SaveTime    uint64 `json:"saveTime"`    //救治时间
 	MapPosition string `json:"mapPosition"` // 地理位置
 }
 
@@ -36,13 +50,15 @@ type ExamParam struct {
 	Operation   string `json:"operation"`   //检疫类型
 	Operator    string `json:"operator"`    //检疫人
 	ExamTime    string `json:"examTime"`    //防疫时间
+	ExamResult  string `json:"examResult"`  //防疫结果
 	MapPosition string `json:"mapPosition"` // 地理位置
 }
 
 // 灭尸结构
 type DestroyParam struct {
 	ProductId   string `json:"productId"`
-	SerialNum   string `json:"serialNum"`   //序列号
+	LostReason  string `json:"lostReason"`  //灭尸原因
+	LostWay     string `json:"lostWay"`     //灭尸方式
 	Operation   string `json:"operation"`   //灭尸类型
 	Operator    string `json:"operator"`    //灭尸人
 	LostTime    uint64 `json:"lostTime"`    //灭尸时间
@@ -55,15 +71,6 @@ type OutputParam struct {
 	Operation   string `json:"operation"`   //出栏类型
 	Operator    string `json:"operator"`    //出栏人
 	OutputTime  uint64 `json:"outputTime"`  //出栏时间
-	MapPosition string `json:"mapPosition"` //地理位置
-}
-
-// 灭尸
-type LostParam struct {
-	ProductId   string `json:"productId"`
-	Operation   string `json:"operation"`   //灭尸类型
-	Operator    string `json:"operator"`    //灭尸人
-	LostTime    uint64 `json:"lostTime"`    //灭尸时间
 	MapPosition string `json:"mapPosition"` //地理位置
 }
 

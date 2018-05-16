@@ -2,10 +2,10 @@ package control
 
 import (
 	"encoding/json"
-	"jiake_chaincode/log"
+	"jiakechaincode/log"
 	"strings"
-	"jiake_chaincode/service"
-	"jiake_chaincode/module"
+	"jiakechaincode/service"
+	"jiakechaincode/module"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
 )
@@ -39,9 +39,9 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.QueryByProduct(stub,args)
 	} else if lowFuncation == "queryhistorybyproduct" { //查询批次ID
 		return t.QueryHistoryByProduct(stub,args)
-	} else if lowFuncation == "" { //查询交易ID
-
-	} else if lowFuncation == "QueryBatchByProduct" { //查询批次ID
+	} else if lowFuncation == "querybytx" { //查询交易ID
+		return t.QueryByTX(stub,args)
+	} else if lowFuncation == "querybatchbyproduct" { //查询批次ID
 		return t.QueryBatchByProduct(stub,args)
 	}
 	return shim.Error("Invalid invoke function name. " + funcation)
@@ -183,7 +183,7 @@ func (t *ProductTrace) Lost(stub shim.ChaincodeStubInterface, args []string) pee
 	log.Logger.Info("##############调用Lost接口开始###############")
 	returnInfo := ReturnInfo{}
 	if len(args)>=1 {
-		var paramList []module.LostParam
+		var paramList []module.DestroyParam
 		err := json.Unmarshal([]byte(args),&paramList)
 		if err != nil {
 			returnInfo.Status = false

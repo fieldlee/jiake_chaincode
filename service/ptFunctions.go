@@ -2,9 +2,9 @@ package service
 
 import (
 	"encoding/json"
-	"jiake_chaincode/common"
-	"jiake_chaincode/log"
-	"jiake_chaincode/module"
+	"jiakechaincode/common"
+	"jiakechaincode/log"
+	"jiakechaincode/module"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -32,7 +32,6 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 
 	product := module.Product{}
 	product.ProductId = param.ProductId
-	product.ProductName = param.ProductName
 	product.PreOwner = common.SYSTEM
 	product.Type = param.Type
 	product.Kind = param.Kind
@@ -142,6 +141,7 @@ func goFeed(stub shim.ChaincodeStubInterface, param module.FeedParam, feedChan c
 	feedObj.TxId = stub.GetTxID()
 	feedObj.Operation = param.Operation
 	feedObj.Operator = param.Operator
+	feedObj.FeedName = param.FeedName
 	feedObj.FeedTime = param.FeedTime
 	feedObj.MapPosition = param.MapPosition
 
@@ -213,7 +213,13 @@ func goVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam, vacc
 	vaccine.ProductId = param.ProductId
 	vaccine.Operation = param.Operation
 	vaccine.Operator = param.Operator
+	// VaccineName   string `json:"vaccineName"`   //防疫的药品名称
+	// VaccineType   string `json:"vaccineType"`   //防疫项目
+	// VaccineNumber string `json:"vaccineNumber"` //防疫药品的数量
+	// VaccineTime   uint64 `json:"vaccineTime"`   //防疫时间
 	vaccine.VaccineName = param.VaccineName
+	vaccine.VaccineType = param.VaccineType
+	vaccine.VaccineNumber = param.VaccineNumber
 	vaccine.VaccineTime = param.VaccineTime
 	vaccine.MapPosition = param.MapPosition
 	product.VaccineList = append(product.VaccineList, vaccine)
@@ -389,12 +395,17 @@ func goExam(stub shim.ChaincodeStubInterface, param module.ExamParam, examChan c
 		examChan <- vChan
 		return
 	}
-
+	// ExamOperation   string `json:"examOperation"`   //检疫类型
+	// ExamOperator    string `json:"examOperator"`    //检疫人
+	// ExamTime        string `json:"examTime"`        //防疫时间
+	// ExamResult      string `json:"examResult"`      //防疫结果
+	// ExamMapPosition string `json:"examMapPosition"` // 地理位置
 	// create vaccine object
 	product.ExamTxId = stub.GetTxID()
 	product.ExamMapPosition = param.MapPosition
 	product.ExamOperation = param.Operation
 	product.ExamTime = param.ExamTime
+	product.ExamResult = param.ExamResult
 	product.ExamOperator = param.Operator
 	// modify status 待宰状态
 	product.Status = common.STATUS["BUTCHER"]
@@ -418,6 +429,85 @@ func goExam(stub shim.ChaincodeStubInterface, param module.ExamParam, examChan c
 	vChan.Status = true
 	vChan.ErrorCode = common.ERR["NONE"]
 	examChan <- vChan
+	return
+}
+
+func goSave(stub shim.ChaincodeStubInterface, param module.SaveParam, saveChan chan ChanInfo) {
+	defer wg.Done()
+	vChan := ChanInfo{}
+	vChan.ProductId = param.ProductId
+	// 	verify product if exist or not
+	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	if err != nil {
+		log.Logger.Error("goSave -- getState:" + err.Error() + "	productid:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		saveChan <- vChan
+		return
+	}
+	if jsonParam == nil {
+		log.Logger.Error("goSave -- 未入栏")
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["NOREGISTER"]
+		saveChan <- vChan
+		return
+	}
+
+	product := module.Product{}
+	err := json.Unmarshal(jsonParam, &product)
+	if err != nil {
+		log.Logger.Error("goSave -- Unmarshal product err:" + err.Error() + "	productid:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		saveChan <- vChan
+		return
+	}
+	if product.Status != common.STATUS["INModule"] { //入栏状态
+		log.Logger.Error("goSave -- 状态不对，目前不是入栏状态" + "	productid:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["STATUSERR"]
+		saveChan <- vChan
+		return
+	}
+	// create save object
+
+	// SaveName    string `json:"saveName"`    //救治的药品名称
+	// SaveType    string `json:"saveType"`    //救治项目
+	// SaveNumber  string `json:"saveNumber"`  //救治药品的数量
+	// SaveTime    uint64 `json:"saveTime"`    //救治时间
+
+	save := module.Save{}
+	save.TxId = stub.GetTxID()
+	save.ProductId = param.ProductId
+	save.Operation = param.Operation
+	save.Operator = param.Operator
+	save.SaveName = param.SaveName
+	save.SaveType = param.SaveType
+	save.SaveNumber = param.SaveNumber
+	save.SaveTime = param.SaveTime
+	save.MapPosition = param.MapPosition
+	product.SaveList = append(product.SaveList, save)
+	// marshal product into state
+	jsonProduct, err := json.Marshal(product)
+	if err != nil {
+		log.Logger.Error("goSave -- Marshal product err :" + err.Error() + "	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		saveChan <- vChan
+		return
+	}
+
+	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	if err != nil {
+		log.Logger.Error("goSave -- putstate product err :" + err.Error() + "	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		saveChan <- vChan
+		return
+	}
+	vChan.Status = true
+	vChan.ErrorCode = common.ERR["NONE"]
+	saveChan <- vChan
 	return
 }
 
@@ -521,7 +611,7 @@ func goButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam, butc
 	return
 }
 
-func goLost(stub shim.ChaincodeStubInterface, param module.LostParam, lostChan chan ChanInfo) {
+func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostChan chan ChanInfo) {
 	defer wg.Done()
 	vChan := ChanInfo{}
 	vChan.ProductId = param.ProductId

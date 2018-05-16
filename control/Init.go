@@ -1,7 +1,7 @@
 package control
 
 import (
-	"jiake_chaincode/log"
+	"jiakechaincode/log"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
