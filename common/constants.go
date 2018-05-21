@@ -1,6 +1,6 @@
 package common
 
-var ERR = map[string]interface{}{
+var ERR = map[string]string{
 	"NONE":        "000",
 	"NOREGISTER":  "001",
 	"HADREGISTER": "002",

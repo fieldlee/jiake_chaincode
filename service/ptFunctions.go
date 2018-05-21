@@ -78,7 +78,7 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 		regChan <- tChan
 		return
 	}
-	changeOwner.OperateTime = time.GetSeconds()
+	changeOwner.OperateTime = uint64(time.GetSeconds())
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
