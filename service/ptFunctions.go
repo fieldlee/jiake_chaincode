@@ -45,7 +45,7 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	// MODIFY STATUS
 	product.Status = common.STATUS["INModule"]
 
-	jsonByte, err = json.Marshal(product)
+	jsonByte, err := json.Marshal(product)
 	if err != nil {
 		log.Logger.Error("goRegister -- marshal product err:" + err.Error() + "	productid:" + param.ProductId)
 		tChan.Status = false
@@ -54,7 +54,7 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 		return
 	}
 
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonByte)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonByte)
 	if err != nil {
 		log.Logger.Error("goRegister -- putState:" + err.Error() + "	productid:" + param.ProductId)
 		tChan.Status = false
@@ -80,7 +80,7 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	}
 	changeOwner.OperateTime = time.GetSeconds()
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
-	err := stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
 	if err != nil {
 		log.Logger.Error("goRegister -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
@@ -118,7 +118,7 @@ func goFeed(stub shim.ChaincodeStubInterface, param module.FeedParam, feedChan c
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goFeed -- Unmarshal product:" + err.Error() + "	productid:" + param.ProductId)
 		fedChan.Status = false
@@ -156,7 +156,7 @@ func goFeed(stub shim.ChaincodeStubInterface, param module.FeedParam, feedChan c
 		return
 	}
 
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goFeed -- putState:" + err.Error() + "	productid:" + param.ProductId)
 		fedChan.Status = false
@@ -192,7 +192,7 @@ func goVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam, vacc
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goVaccine -- Unmarshal product err:" + err.Error() + "	productid:" + param.ProductId)
 		vChan.Status = false
@@ -233,7 +233,7 @@ func goVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam, vacc
 		return
 	}
 
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goVaccine -- putstate product err :" + err.Error() + "	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -269,7 +269,7 @@ func goOutput(stub shim.ChaincodeStubInterface, param module.OutputParam, output
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goOutput -- Unmarshal product err :" + err.Error() + "	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -315,7 +315,7 @@ func goOutput(stub shim.ChaincodeStubInterface, param module.OutputParam, output
 		return
 	}
 
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goOutput -- PutState product" + err.Error() + "	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -341,7 +341,7 @@ func goOutput(stub shim.ChaincodeStubInterface, param module.OutputParam, output
 	}
 	changeOwner.OperateTime = time.GetSeconds()
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
-	err := stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
 	if err != nil {
 		log.Logger.Error("goOutput -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
@@ -379,7 +379,7 @@ func goExam(stub shim.ChaincodeStubInterface, param module.ExamParam, examChan c
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goExam -- Unmarshal product ERR:" + err.Error() + "	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -418,7 +418,7 @@ func goExam(stub shim.ChaincodeStubInterface, param module.ExamParam, examChan c
 		examChan <- vChan
 		return
 	}
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goExam -- PutState product ERR:" + err.Error() + "	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -454,7 +454,7 @@ func goSave(stub shim.ChaincodeStubInterface, param module.SaveParam, saveChan c
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goSave -- Unmarshal product err:" + err.Error() + "	productid:" + param.ProductId)
 		vChan.Status = false
@@ -497,7 +497,7 @@ func goSave(stub shim.ChaincodeStubInterface, param module.SaveParam, saveChan c
 		return
 	}
 
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goSave -- putstate product err :" + err.Error() + "	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -533,7 +533,7 @@ func goButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam, butc
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goButcher -- Unmarshal product err:" + err.Error() + " 	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -569,7 +569,7 @@ func goButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam, butc
 		butcherChan <- vChan
 		return
 	}
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goButcher -- PutState product err:" + err.Error() + " 	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -595,7 +595,7 @@ func goButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam, butc
 	}
 	changeOwner.OperateTime = time.GetSeconds()
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
-	err := stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
 	if err != nil {
 		log.Logger.Error("goButcher -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
@@ -633,7 +633,7 @@ func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostCha
 	}
 
 	product := module.Product{}
-	err := json.Unmarshal(jsonParam, &product)
+	err = json.Unmarshal(jsonParam, &product)
 	if err != nil {
 		log.Logger.Error("goLost -- Unmarshal product err:" + err.Error() + " 	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -669,7 +669,7 @@ func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostCha
 		lostChan <- vChan
 		return
 	}
-	err := stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
 	if err != nil {
 		log.Logger.Error("goLost -- PutState product err:" + err.Error() + " 	prodocut:" + param.ProductId)
 		vChan.Status = false
@@ -695,7 +695,7 @@ func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostCha
 	}
 	changeOwner.OperateTime = time.GetSeconds()
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
-	err := stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
 	if err != nil {
 		log.Logger.Error("goLost -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
