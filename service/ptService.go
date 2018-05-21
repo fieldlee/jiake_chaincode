@@ -29,13 +29,13 @@ type ReturnErrorInfo struct {
 func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	registerChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goRegister(stub, v, registerChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
 
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-registerChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -58,13 +58,13 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	feedChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goFeed(stub, v, feedChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
 
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-feedChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -86,13 +86,13 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	vaccineChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goVaccine(stub, v, vaccineChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
 
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-vaccineChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -114,12 +114,12 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	outputChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goOutput(stub, v, outputChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-outputChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -141,12 +141,12 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	examChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goExam(stub, v, examChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-examChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -167,12 +167,12 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	saveChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goSave(stub, v, saveChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-saveChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -193,12 +193,12 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	butcherChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goButcher(stub, v, butcherChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-butcherChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
@@ -219,12 +219,12 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) peer.Response {
 	wg.Add(len(paramList)) //添加队列数
 	lostChan := make(chan ChanInfo, len(paramList))
-	for _, v := range paramList {
+	for v := range paramList {
 		go goLost(stub, v, lostChan)
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for v := range paramList {
+	for _ := range paramList {
 		tChan := <-lostChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
