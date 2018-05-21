@@ -51,7 +51,7 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	}
 
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**喂养上链**/
@@ -79,7 +79,7 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**防疫信息上链**/
@@ -107,7 +107,7 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**出栏操作**/
@@ -134,7 +134,7 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**检疫**/
@@ -160,7 +160,7 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**救治**/
@@ -186,7 +186,7 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**屠宰**/
@@ -212,7 +212,7 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**灭尸**/
@@ -238,7 +238,7 @@ func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) pee
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[0:]))
+	return shim.Success(jsonReturn)
 }
 
 /**查询**/
@@ -249,7 +249,7 @@ func QueryByProduct(stub shim.ChaincodeStubInterface, param module.QueryParam) p
 		log.Logger.Error("QueryByProduct err:" + err.Error())
 		return shim.Error(err.Error())
 	}
-	return shim.Success(string(jsonBytes[:]))
+	return shim.Success(jsonBytes)
 }
 
 /**查询历史**/
@@ -279,7 +279,7 @@ func QueryHistoryByProduct(stub shim.ChaincodeStubInterface, param module.QueryP
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	return shim.Success(string(resultsJSON[:]))
+	return shim.Success(resultsJSON)
 }
 
 /**查询批次**/
@@ -308,7 +308,7 @@ func QueryBatchByProduct(stub shim.ChaincodeStubInterface, param module.BatchPar
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	return shim.Success(string(resultsJSON[:]))
+	return shim.Success(resultsJSON)
 }
 
 /**查询交易**/
@@ -339,5 +339,5 @@ func QueryByTX(stub shim.ChaincodeStubInterface, param module.QueryTxParam) peer
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	return shim.Success(string(resultsJSON[:]))
+	return shim.Success(resultsJSON)
 }
