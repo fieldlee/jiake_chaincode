@@ -339,7 +339,7 @@ func goOutput(stub shim.ChaincodeStubInterface, param module.OutputParam, output
 		outputChan <- vChan
 		return
 	}
-	changeOwner.OperateTime = time.GetSeconds()
+	changeOwner.OperateTime = uint64(time.GetSeconds())
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
@@ -593,7 +593,7 @@ func goButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam, butc
 		butcherChan <- vChan
 		return
 	}
-	changeOwner.OperateTime = time.GetSeconds()
+	changeOwner.OperateTime = uint64(time.GetSeconds())
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
@@ -650,12 +650,14 @@ func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostCha
 		return
 	}
 
-	// create vaccine object
+	// create lost object
 	product.LostTxId = stub.GetTxID()
 	product.LostMapPosition = param.MapPosition
 	product.LostOperation = param.Operation
-	product.LostTime = param.ButcherTime
+	product.LostTime = param.LostTime
 	product.LostOperator = param.Operator
+	product.LostReason = param.LostReason
+	product.LostWay = param.LostWay
 	product.PreOwner = product.CurrentOwner
 	product.CurrentOwner = common.SYSTEM
 	// modify status 灭尸
@@ -693,7 +695,7 @@ func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostCha
 		lostChan <- vChan
 		return
 	}
-	changeOwner.OperateTime = time.GetSeconds()
+	changeOwner.OperateTime = uint64(time.GetSeconds())
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 

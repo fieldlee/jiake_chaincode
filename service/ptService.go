@@ -35,9 +35,8 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
 
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- registerChan //get Channel return value
+	for v := range paramList {
+		tChan := <-registerChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -52,7 +51,7 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	}
 
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**喂养上链**/
@@ -65,9 +64,8 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
 
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- feedChan //get Channel return value
+	for v := range paramList {
+		tChan := <-feedChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -81,7 +79,7 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**防疫信息上链**/
@@ -94,9 +92,8 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
 
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- vaccineChan //get Channel return value
+	for v := range paramList {
+		tChan := <-vaccineChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -110,7 +107,7 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**出栏操作**/
@@ -122,9 +119,8 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- outputChan //get Channel return value
+	for v := range paramList {
+		tChan := <-outputChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -138,7 +134,7 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**检疫**/
@@ -150,9 +146,8 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- examChan //get Channel return value
+	for v := range paramList {
+		tChan := <-examChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -165,7 +160,7 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**救治**/
@@ -177,9 +172,8 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- saveChan //get Channel return value
+	for v := range paramList {
+		tChan := <-saveChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -192,7 +186,7 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**屠宰**/
@@ -204,9 +198,8 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- butcherChan //get Channel return value
+	for v := range paramList {
+		tChan := <-butcherChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -219,7 +212,7 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**灭尸**/
@@ -231,9 +224,8 @@ func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) pee
 	}
 	// 	获得chan 返回的值
 	returnError := ReturnErrorInfo{}
-	for i, _ := range paramList {
-		tChan := ChanInfo{}
-		tChan <- lostChan //get Channel return value
+	for v := range paramList {
+		tChan := <-lostChan //get Channel return value
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -246,7 +238,7 @@ func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) pee
 		returnError.Status = true
 	}
 	jsonReturn, err := json.Marshal(returnError)
-	return shim.Success(string(jsonReturn[:]))
+	return shim.Success(string(jsonReturn[0:]))
 }
 
 /**查询**/
