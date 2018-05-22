@@ -16,19 +16,21 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	log.Logger.Info("goRegister -- 	productid:" + param.ProductId)
 	// 	verify product if exist or not
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
-	if err != nil {
-		log.Logger.Error("goRegister -- get product by productid -- err:" + err.Error() + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["CHAINERR"]
-		regChan <- tChan
-		return
-	}
+
 	if jsonParam != nil {
 		log.Logger.Error("goRegister -- get product by productid -- err: 已经入栏，不能再次入栏" + "	productid:" + param.ProductId)
 		tChan.Status = false
 		tChan.ErrorCode = common.ERR["HADREGISTER"]
 		regChan <- tChan
 		return
+	} else {
+		if err != nil {
+			log.Logger.Error("goRegister -- get product by productid -- err:" + err.Error() + "	productid:" + param.ProductId)
+			tChan.Status = false
+			tChan.ErrorCode = common.ERR["CHAINERR"]
+			regChan <- tChan
+			return
+		}
 	}
 
 	product := module.Product{}
@@ -106,10 +108,10 @@ func goFeed(stub shim.ChaincodeStubInterface, param module.FeedParam, feedChan c
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goFeed -- getState by productid:" + err.Error() + "	productid:" + param.ProductId)
-		fedChan.Status = false
-		fedChan.ErrorCode = common.ERR["CHAINERR"]
-		feedChan <- fedChan
-		return
+		// fedChan.Status = false
+		// fedChan.ErrorCode = common.ERR["CHAINERR"]
+		// feedChan <- fedChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goFeed -- get product by id , 未入栏，请入栏" + "	productid:" + param.ProductId)
@@ -180,10 +182,10 @@ func goVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam, vacc
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goVaccine -- getState:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		vaccineChan <- vChan
-		return
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+		// vaccineChan <- vChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goVaccine -- 未入栏")
@@ -257,10 +259,10 @@ func goOutput(stub shim.ChaincodeStubInterface, param module.OutputParam, output
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goOutput -- getstate product err :" + err.Error() + "	prodocut:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		outputChan <- vChan
-		return
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+		// outputChan <- vChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goOutput -- 未入栏" + "	prodocut:" + param.ProductId)
@@ -367,10 +369,10 @@ func goExam(stub shim.ChaincodeStubInterface, param module.ExamParam, examChan c
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goExam -- getState product" + err.Error() + "	prodocut:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		examChan <- vChan
-		return
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+		// examChan <- vChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goExam -- 查找不到资产，未入栏	prodocut:" + param.ProductId)
@@ -442,10 +444,10 @@ func goSave(stub shim.ChaincodeStubInterface, param module.SaveParam, saveChan c
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goSave -- getState:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		saveChan <- vChan
-		return
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+		// saveChan <- vChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goSave -- 未入栏")
@@ -521,10 +523,10 @@ func goButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam, butc
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goButcher -- GetState product ERR:" + err.Error() + "	prodocut:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		butcherChan <- vChan
-		return
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+		// butcherChan <- vChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goButcher -- 查找不到资产，未入栏 	prodocut:" + param.ProductId)
@@ -621,10 +623,10 @@ func goLost(stub shim.ChaincodeStubInterface, param module.DestroyParam, lostCha
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
 		log.Logger.Error("goLost -- GetState product ERR:" + err.Error() + "	prodocut:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		lostChan <- vChan
-		return
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+		// lostChan <- vChan
+		// return
 	}
 	if jsonParam == nil {
 		log.Logger.Error("goLost -- 查找不到资产，未入栏 	prodocut:" + param.ProductId)
