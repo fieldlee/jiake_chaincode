@@ -9,98 +9,98 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
-func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, regChan chan ChanInfo) {
-	defer wg.Done()
-	tChan := ChanInfo{}
-	tChan.ProductId = param.ProductId
-	log.Logger.Info("goRegister--productid:" + param.ProductId)
-	// 	verify product if exist or not
-	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
-	log.Logger.Info("------------------------------------------------------------------")
-	log.Logger.Info(string(jsonParam[:]))
+// func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, regChan chan ChanInfo) {
+// 	defer wg.Done()
+// 	tChan := ChanInfo{}
+// 	tChan.ProductId = param.ProductId
+// 	log.Logger.Info("goRegister--productid:" + param.ProductId)
+// 	// 	verify product if exist or not
+// 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+// 	log.Logger.Info("------------------------------------------------------------------")
+// 	log.Logger.Info(string(jsonParam[:]))
 
-	if jsonParam != nil {
-		log.Logger.Error("goRegister -- get product by productid -- err: 已经入栏，不能再次入栏" + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["HADREGISTER"]
-		regChan <- tChan
-		return
-	} else {
-		if err != nil {
-			log.Logger.Error("goRegister -- get product by productid -- err:" + err.Error() + "	productid:" + param.ProductId)
-			// tChan.Status = false
-			// tChan.ErrorCode = common.ERR["CHAINERR"]
-			// regChan <- tChan
-			// return
-		}
-	}
+// 	if jsonParam != nil {
+// 		log.Logger.Error("goRegister -- get product by productid -- err: 已经入栏，不能再次入栏" + "	productid:" + param.ProductId)
+// 		tChan.Status = false
+// 		tChan.ErrorCode = common.ERR["HADREGISTER"]
+// 		regChan <- tChan
+// 		return
+// 	} else {
+// 		if err != nil {
+// 			log.Logger.Error("goRegister -- get product by productid -- err:" + err.Error() + "	productid:" + param.ProductId)
+// 			// tChan.Status = false
+// 			// tChan.ErrorCode = common.ERR["CHAINERR"]
+// 			// regChan <- tChan
+// 			// return
+// 		}
+// 	}
 
-	product := module.Product{}
-	product.ProductId = param.ProductId
-	product.PreOwner = common.SYSTEM
-	product.Type = param.Type
-	product.Kind = param.Kind
-	product.CreateTime = param.CreateTime
-	product.BatchNumber = param.BatchNumber
-	product.MapPosition = param.MapPosition
-	product.Operation = param.Operation
-	product.Operator = param.Operator
-	product.PreOwner = common.SYSTEM
-	product.CurrentOwner = common.GetUserFromCertification(stub)
-	// MODIFY STATUS
+// 	product := module.Product{}
+// 	product.ProductId = param.ProductId
+// 	product.PreOwner = common.SYSTEM
+// 	product.Type = param.Type
+// 	product.Kind = param.Kind
+// 	product.CreateTime = param.CreateTime
+// 	product.BatchNumber = param.BatchNumber
+// 	product.MapPosition = param.MapPosition
+// 	product.Operation = param.Operation
+// 	product.Operator = param.Operator
+// 	product.PreOwner = common.SYSTEM
+// 	product.CurrentOwner = common.GetUserFromCertification(stub)
+// 	// MODIFY STATUS
 
-	product.Status = common.STATUS["INModule"]
+// 	product.Status = common.STATUS["INModule"]
 
-	jsonByte, err := json.Marshal(product)
-	if err != nil {
-		log.Logger.Error("goRegister -- marshal product err:" + err.Error() + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["CHAINERR"]
-		regChan <- tChan
-		return
-	}
+// 	jsonByte, err := json.Marshal(product)
+// 	if err != nil {
+// 		log.Logger.Error("goRegister -- marshal product err:" + err.Error() + "	productid:" + param.ProductId)
+// 		tChan.Status = false
+// 		tChan.ErrorCode = common.ERR["CHAINERR"]
+// 		regChan <- tChan
+// 		return
+// 	}
 
-	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonByte)
-	if err != nil {
-		log.Logger.Error("goRegister -- putState:" + err.Error() + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["CHAINERR"]
-		regChan <- tChan
-		return
-	}
+// 	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonByte)
+// 	if err != nil {
+// 		log.Logger.Error("goRegister -- putState:" + err.Error() + "	productid:" + param.ProductId)
+// 		tChan.Status = false
+// 		tChan.ErrorCode = common.ERR["CHAINERR"]
+// 		regChan <- tChan
+// 		return
+// 	}
 
-	// asset transcation
-	changeOwner := module.ChangeAssetOwner{}
-	changeOwner.PreOwner = common.SYSTEM
-	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
-	changeOwner.ProductId = param.ProductId
-	changeOwner.Operation = param.Operation
-	changeOwner.Operator = param.Operator
-	time, err := stub.GetTxTimestamp()
-	if err != nil {
-		log.Logger.Error("goRegister -- register change owner get time:" + err.Error() + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["CHAINERR"]
-		regChan <- tChan
-		return
-	}
-	changeOwner.OperateTime = uint64(time.GetSeconds())
-	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
-	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+// 	// asset transcation
+// 	changeOwner := module.ChangeAssetOwner{}
+// 	changeOwner.PreOwner = common.SYSTEM
+// 	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
+// 	changeOwner.ProductId = param.ProductId
+// 	changeOwner.Operation = param.Operation
+// 	changeOwner.Operator = param.Operator
+// 	time, err := stub.GetTxTimestamp()
+// 	if err != nil {
+// 		log.Logger.Error("goRegister -- register change owner get time:" + err.Error() + "	productid:" + param.ProductId)
+// 		tChan.Status = false
+// 		tChan.ErrorCode = common.ERR["CHAINERR"]
+// 		regChan <- tChan
+// 		return
+// 	}
+// 	changeOwner.OperateTime = uint64(time.GetSeconds())
+// 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
+// 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
-	if err != nil {
-		log.Logger.Error("goRegister -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["CHAINERR"]
-		regChan <- tChan
-		return
-	}
+// 	if err != nil {
+// 		log.Logger.Error("goRegister -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
+// 		tChan.Status = false
+// 		tChan.ErrorCode = common.ERR["CHAINERR"]
+// 		regChan <- tChan
+// 		return
+// 	}
 
-	tChan.Status = true
-	tChan.ErrorCode = common.ERR["NONE"]
-	regChan <- tChan
-	return
-}
+// 	tChan.Status = true
+// 	tChan.ErrorCode = common.ERR["NONE"]
+// 	regChan <- tChan
+// 	return
+// }
 
 func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (tChan ChanInfo) {
 	tChan.ProductId = param.ProductId
@@ -126,6 +126,7 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 	}
 
 	product := module.Product{}
+	product.TxId = stub.GetTxID()
 	product.ProductId = param.ProductId
 	product.PreOwner = common.SYSTEM
 	product.Type = param.Type

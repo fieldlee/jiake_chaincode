@@ -88,7 +88,7 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 	returnError := ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Feed --range:" + strconv.Itoa(i))
-		tChan = toFeed(stub, v)
+		tChan := toFeed(stub, v)
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
@@ -211,7 +211,7 @@ func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) pee
 	returnError := ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Lost --range:" + strconv.Itoa(i))
-		tChan := toLost(stub, v, lostChan)
+		tChan := toLost(stub, v)
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
