@@ -54,6 +54,7 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	}
 
 	jsonReturn, _ := json.Marshal(returnError)
+	log.Logger.Info(string(jsonReturn[:]))
 	return shim.Success(jsonReturn)
 }
 

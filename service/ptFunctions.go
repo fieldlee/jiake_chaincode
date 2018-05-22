@@ -13,6 +13,7 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	defer wg.Done()
 	tChan := ChanInfo{}
 	tChan.ProductId = param.ProductId
+	log.Logger.Info("goRegister -- 	productid:" + param.ProductId)
 	// 	verify product if exist or not
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
 	if err != nil {
@@ -43,6 +44,7 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	product.PreOwner = common.SYSTEM
 	product.CurrentOwner = common.GetUserFromCertification(stub)
 	// MODIFY STATUS
+
 	product.Status = common.STATUS["INModule"]
 
 	jsonByte, err := json.Marshal(product)
