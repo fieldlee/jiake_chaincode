@@ -13,9 +13,11 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	defer wg.Done()
 	tChan := ChanInfo{}
 	tChan.ProductId = param.ProductId
-	log.Logger.Info("goRegister -- 	productid:" + param.ProductId)
+	log.Logger.Info("goRegister--productid:" + param.ProductId)
 	// 	verify product if exist or not
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	log.Logger.Info("------------------------------------------------------------------")
+	log.Logger.Info(string(jsonParam[:]))
 
 	if jsonParam != nil {
 		log.Logger.Error("goRegister -- get product by productid -- err: 已经入栏，不能再次入栏" + "	productid:" + param.ProductId)
@@ -26,10 +28,10 @@ func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, re
 	} else {
 		if err != nil {
 			log.Logger.Error("goRegister -- get product by productid -- err:" + err.Error() + "	productid:" + param.ProductId)
-			tChan.Status = false
-			tChan.ErrorCode = common.ERR["CHAINERR"]
-			regChan <- tChan
-			return
+			// tChan.Status = false
+			// tChan.ErrorCode = common.ERR["CHAINERR"]
+			// regChan <- tChan
+			// return
 		}
 	}
 

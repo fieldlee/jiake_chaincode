@@ -31,7 +31,8 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	wg.Add(len(paramList)) //添加队列数
 	registerChan := make(chan ChanInfo, len(paramList))
 	for i, v := range paramList {
-		log.Logger.Info("Register --- range :" + strconv.Itoa(i))
+		log.Logger.Info("Register --- send :" + strconv.Itoa(i))
+		log.Logger.Info("Register --- send :" + v.ProductId)
 		go goRegister(stub, v, registerChan)
 	}
 	// 	获得chan 返回的值
@@ -40,6 +41,7 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	for j, _ := range paramList {
 		log.Logger.Info("Register chan --- range :" + strconv.Itoa(j))
 		tChan := <-registerChan //get Channel return value
+		log.Logger.Info("Register --- RECIVED :" + tChan.ProductId)
 		if tChan.Status == false {
 			returnError.ErrorList = append(returnError.ErrorList, tChan)
 		}
