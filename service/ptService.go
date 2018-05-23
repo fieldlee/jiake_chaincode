@@ -14,21 +14,10 @@ import (
 
 // var wg sync.WaitGroup
 
-type ChanInfo struct {
-	ProductId string `json:"productId"`
-	Status    bool   `json:"status"`
-	ErrorCode string `json:"errorCode"`
-}
-
-type ReturnErrorInfo struct {
-	Status    bool       `json:"status"`
-	ErrorList []ChanInfo `json:errorList`
-}
-
 /**产品注册信息**/
 func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Register --- send :" + strconv.Itoa(i))
 		log.Logger.Info("Register --- send :" + v.ProductId)
@@ -85,7 +74,7 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 /**喂养上链**/
 func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Feed --range:" + strconv.Itoa(i))
 		tChan := toFeed(stub, v)
@@ -106,7 +95,7 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 /**防疫信息上链**/
 func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Vaccine  ---range:" + strconv.Itoa(i))
 		tChan := toVaccine(stub, v)
@@ -126,7 +115,7 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 /**出栏操作**/
 func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Output --range:" + strconv.Itoa(i))
 		tChan := toOutput(stub, v)
@@ -146,7 +135,7 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 /**检疫**/
 func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Exam --range:" + strconv.Itoa(i))
 		tChan := toExam(stub, v)
@@ -167,7 +156,7 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 /**救治**/
 func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Save --range:" + strconv.Itoa(i))
 		tChan := toSave(stub, v)
@@ -187,7 +176,7 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 /**屠宰**/
 func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Butcher --range:" + strconv.Itoa(i))
 		tChan := toButcher(stub, v)
@@ -208,7 +197,7 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 /**灭尸**/
 func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) peer.Response {
 	// 	获得chan 返回的值
-	returnError := ReturnErrorInfo{}
+	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
 		log.Logger.Info("Lost --range:" + strconv.Itoa(i))
 		tChan := toLost(stub, v)

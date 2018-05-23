@@ -9,9 +9,9 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
-// func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, regChan chan ChanInfo) {
+// func goRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam, regChan chan module.ChanInfo) {
 // 	defer wg.Done()
-// 	tChan := ChanInfo{}
+// 	tChan := module.ChanInfo{}
 // 	tChan.ProductId = param.ProductId
 // 	log.Logger.Info("goRegister--productid:" + param.ProductId)
 // 	// 	verify product if exist or not
@@ -102,7 +102,7 @@ import (
 // 	return
 // }
 
-func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (tChan ChanInfo) {
+func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (tChan module.ChanInfo) {
 	tChan.ProductId = param.ProductId
 	log.Logger.Info("goRegister--productid:" + param.ProductId)
 	// 	verify product if exist or not
@@ -192,7 +192,7 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 	return
 }
 
-func toFeed(stub shim.ChaincodeStubInterface, param module.FeedParam) (fedChan ChanInfo) {
+func toFeed(stub shim.ChaincodeStubInterface, param module.FeedParam) (fedChan module.ChanInfo) {
 	fedChan.ProductId = param.ProductId
 	// 	verify product if exist or not
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
@@ -260,7 +260,7 @@ func toFeed(stub shim.ChaincodeStubInterface, param module.FeedParam) (fedChan C
 	return
 }
 
-func toVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam) (vChan ChanInfo) {
+func toVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam) (vChan module.ChanInfo) {
 	vChan.ProductId = param.ProductId
 	// 	verify product if exist or not
 	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
@@ -329,7 +329,7 @@ func toVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam) (vCh
 	return
 }
 
-func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan ChanInfo) {
+func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan module.ChanInfo) {
 
 	vChan.ProductId = param.ProductId
 	// 	verify product if exist or not
@@ -438,7 +438,7 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 	return
 }
 
-func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan ChanInfo) {
+func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan module.ChanInfo) {
 
 	vChan.ProductId = param.ProductId
 	// 	verify product if exist or not
@@ -512,7 +512,7 @@ func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan Cha
 	return
 }
 
-func toSave(stub shim.ChaincodeStubInterface, param module.SaveParam) (vChan ChanInfo) {
+func toSave(stub shim.ChaincodeStubInterface, param module.SaveParam) (vChan module.ChanInfo) {
 
 	vChan.ProductId = param.ProductId
 	// 	verify product if exist or not
@@ -590,7 +590,7 @@ func toSave(stub shim.ChaincodeStubInterface, param module.SaveParam) (vChan Cha
 	return
 }
 
-func toButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam) (vChan ChanInfo) {
+func toButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam) (vChan module.ChanInfo) {
 
 	vChan.ProductId = param.ProductId
 	// 	verify product if exist or not
@@ -689,7 +689,7 @@ func toButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam) (vCh
 	return
 }
 
-func toLost(stub shim.ChaincodeStubInterface, param module.DestroyParam) (vChan ChanInfo) {
+func toLost(stub shim.ChaincodeStubInterface, param module.DestroyParam) (vChan module.ChanInfo) {
 
 	vChan.ProductId = param.ProductId
 	// 	verify product if exist or not
