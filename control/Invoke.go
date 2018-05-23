@@ -58,14 +58,16 @@ func (t *ProductTrace) Register(stub shim.ChaincodeStubInterface, args []string)
 		var paramList []module.RegitserParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Register:err" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Register(stub, paramList)
 		}
 	} else {
+		log.Logger.Error("Register:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -82,15 +84,17 @@ func (t *ProductTrace) Feed(stub shim.ChaincodeStubInterface, args []string) pee
 		var paramList []module.FeedParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Feed:err" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Feed(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Feed:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -107,15 +111,17 @@ func (t *ProductTrace) Vaccine(stub shim.ChaincodeStubInterface, args []string) 
 		var paramList []module.VaccineParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Vaccine:err" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Vaccine(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Vaccine:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -132,15 +138,17 @@ func (t *ProductTrace) Output(stub shim.ChaincodeStubInterface, args []string) p
 		var paramList []module.OutputParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Output:err" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Output(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Output:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -157,15 +165,17 @@ func (t *ProductTrace) Exam(stub shim.ChaincodeStubInterface, args []string) pee
 		var paramList []module.ExamParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Exam:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Exam(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Exam:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -182,15 +192,17 @@ func (t *ProductTrace) Save(stub shim.ChaincodeStubInterface, args []string) pee
 		var paramList []module.SaveParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Save:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Save(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Exam:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -207,15 +219,17 @@ func (t *ProductTrace) Butcher(stub shim.ChaincodeStubInterface, args []string) 
 		var paramList []module.ButcherParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Butcher:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Butcher(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Butcher:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -232,15 +246,17 @@ func (t *ProductTrace) Lost(stub shim.ChaincodeStubInterface, args []string) pee
 		var paramList []module.DestroyParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
 		if err != nil {
+			log.Logger.Error("Lost:err:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.Lost(stub, paramList)
 		}
 
 	} else {
+		log.Logger.Error("Lost:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -257,15 +273,17 @@ func (t *ProductTrace) QueryByProduct(stub shim.ChaincodeStubInterface, args []s
 		var param module.QueryParam
 		err := json.Unmarshal([]byte(args[0]), &param)
 		if err != nil {
+			log.Logger.Error("QueryByProduct:err。" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.QueryByProduct(stub, param)
 		}
 
 	} else {
+		log.Logger.Error("QueryByProduct:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -282,15 +300,17 @@ func (t *ProductTrace) QueryHistoryByProduct(stub shim.ChaincodeStubInterface, a
 		var param module.QueryParam
 		err := json.Unmarshal([]byte(args[0]), &param)
 		if err != nil {
+			log.Logger.Error("QueryHistoryByProduct:err:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.QueryHistoryByProduct(stub, param)
 		}
 
 	} else {
+		log.Logger.Error("QueryByProduct:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -307,15 +327,17 @@ func (t *ProductTrace) QueryBatchByProduct(stub shim.ChaincodeStubInterface, arg
 		var param module.BatchParam
 		err := json.Unmarshal([]byte(args[0]), &param)
 		if err != nil {
+			log.Logger.Error("QueryBatchByProduct:err:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.QueryBatchByProduct(stub, param)
 		}
 
 	} else {
+		log.Logger.Error("QueryBatchByProduct:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
@@ -332,15 +354,17 @@ func (t *ProductTrace) QueryByTX(stub shim.ChaincodeStubInterface, args []string
 		var param module.QueryTxParam
 		err := json.Unmarshal([]byte(args[0]), &param)
 		if err != nil {
+			log.Logger.Error("QueryByTX:err:" + err.Error())
 			returnInfo.Status = false
-			returnInfo.Info = ""
+			returnInfo.Info = err.Error()
 		} else {
 			return service.QueryByTX(stub, param)
 		}
 
 	} else {
+		log.Logger.Error("QueryByTX:参数不对，请核实参数信息。")
 		returnInfo.Status = false
-		returnInfo.Info = ""
+		returnInfo.Info = "参数不对，请核实参数信息"
 	}
 	jsonreturn, err := json.Marshal(returnInfo)
 	if err != nil {
