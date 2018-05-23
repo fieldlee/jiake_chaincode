@@ -36,7 +36,7 @@ type Product struct {
 	ExamTxId        string `json:"examTxId"`
 	ExamOperation   string `json:"examOperation"`   //检疫类型
 	ExamOperator    string `json:"examOperator"`    //检疫人
-	ExamTime        string `json:"examTime"`        //防疫时间
+	ExamTime        uint64 `json:"examTime"`        //防疫时间
 	ExamConsequence string `json:"examConsequence"` //防疫结果
 	ExamMapPosition string `json:"examMapPosition"` // 地理位置
 	// 屠宰

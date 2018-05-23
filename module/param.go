@@ -50,7 +50,7 @@ type ExamParam struct {
 	ProductId       string `json:"productId"`
 	Operation       string `json:"operation"`       //检疫类型
 	Operator        string `json:"operator"`        //检疫人
-	ExamTime        string `json:"examTime"`        //防疫时间
+	ExamTime        uint64 `json:"examTime"`        //防疫时间
 	ExamConsequence string `json:"examConsequence"` //防疫结果
 	MapPosition     string `json:"mapPosition"`     // 地理位置
 }
