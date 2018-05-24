@@ -28,9 +28,9 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 	}
 
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 
 	jsonReturn, _ := json.Marshal(returnError)
@@ -61,9 +61,9 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 // 	wg.Wait()
 
 // 	if len(returnError.ErrorList) >= 1 {
-// 		returnError.Status = false
+// 		returnError.Success = false
 // 	} else {
-// 		returnError.Status = true
+// 		returnError.Success = true
 // 	}
 
 // 	jsonReturn, _ := json.Marshal(returnError)
@@ -84,9 +84,9 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 	}
 
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)
@@ -104,9 +104,9 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 		}
 	}
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)
@@ -124,9 +124,9 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 		}
 	}
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)
@@ -145,9 +145,9 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 	}
 
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)
@@ -165,9 +165,9 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 		}
 	}
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)
@@ -186,9 +186,9 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 	}
 
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)
@@ -207,9 +207,9 @@ func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) pee
 	}
 
 	if len(returnError.ErrorList) >= 1 {
-		returnError.Status = false
+		returnError.Success = false
 	} else {
-		returnError.Status = true
+		returnError.Success = true
 	}
 	jsonReturn, _ := json.Marshal(returnError)
 	return shim.Success(jsonReturn)

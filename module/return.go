@@ -7,11 +7,11 @@ type ChanInfo struct {
 }
 
 type ReturnErrorInfo struct {
-	Status    bool       `json:"status"`
+	Success   bool       `json:"success"`
 	ErrorList []ChanInfo `json:"errorList"`
 }
 
 type ReturnInfo struct {
-	Status bool   `json:"status"`
-	Info   string `json:"info"`
+	Success bool   `json:"success"`
+	Info    string `json:"info"`
 }
