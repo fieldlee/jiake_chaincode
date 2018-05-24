@@ -11,11 +11,6 @@ import (
 	"github.com/hyperledger/fabric/protos/peer"
 )
 
-type ReturnInfo struct {
-	Status bool   `json:"status"`
-	Info   string `json:"info"`
-}
-
 func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	log.Logger.Info("Invoke")
 
@@ -53,7 +48,7 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 /**入栏**/
 func (t *ProductTrace) Register(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Register接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.RegitserParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -79,7 +74,7 @@ func (t *ProductTrace) Register(stub shim.ChaincodeStubInterface, args []string)
 /**喂养**/
 func (t *ProductTrace) Feed(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Feed接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.FeedParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -106,7 +101,7 @@ func (t *ProductTrace) Feed(stub shim.ChaincodeStubInterface, args []string) pee
 /**防疫**/
 func (t *ProductTrace) Vaccine(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Vaccine接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.VaccineParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -133,7 +128,7 @@ func (t *ProductTrace) Vaccine(stub shim.ChaincodeStubInterface, args []string) 
 /**出栏**/
 func (t *ProductTrace) Output(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Output接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.OutputParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -160,7 +155,7 @@ func (t *ProductTrace) Output(stub shim.ChaincodeStubInterface, args []string) p
 /**检疫**/
 func (t *ProductTrace) Exam(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Exam接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.ExamParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -187,7 +182,7 @@ func (t *ProductTrace) Exam(stub shim.ChaincodeStubInterface, args []string) pee
 /**救治**/
 func (t *ProductTrace) Save(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Save接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.SaveParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -214,7 +209,7 @@ func (t *ProductTrace) Save(stub shim.ChaincodeStubInterface, args []string) pee
 /**屠宰**/
 func (t *ProductTrace) Butcher(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Butcher接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.ButcherParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -241,7 +236,7 @@ func (t *ProductTrace) Butcher(stub shim.ChaincodeStubInterface, args []string) 
 /**灭尸**/
 func (t *ProductTrace) Lost(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Lost接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var paramList []module.DestroyParam
 		err := json.Unmarshal([]byte(args[0]), &paramList)
@@ -268,7 +263,7 @@ func (t *ProductTrace) Lost(stub shim.ChaincodeStubInterface, args []string) pee
 /**查询产品**/
 func (t *ProductTrace) QueryByProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用Queryproduct接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var param module.QueryParam
 		err := json.Unmarshal([]byte(args[0]), &param)
@@ -295,7 +290,7 @@ func (t *ProductTrace) QueryByProduct(stub shim.ChaincodeStubInterface, args []s
 /**查询历史产品**/
 func (t *ProductTrace) QueryHistoryByProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用QueryHistoryproduct接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var param module.QueryParam
 		err := json.Unmarshal([]byte(args[0]), &param)
@@ -322,7 +317,7 @@ func (t *ProductTrace) QueryHistoryByProduct(stub shim.ChaincodeStubInterface, a
 /**查询批次产品**/
 func (t *ProductTrace) QueryBatchByProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############调用QueryBatchByProduct接口开始###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var param module.BatchParam
 		err := json.Unmarshal([]byte(args[0]), &param)
@@ -349,7 +344,7 @@ func (t *ProductTrace) QueryBatchByProduct(stub shim.ChaincodeStubInterface, arg
 /**查询交易产品**/
 func (t *ProductTrace) QueryByTX(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############QueryByTX###############")
-	returnInfo := ReturnInfo{}
+	returnInfo := module.ReturnInfo{}
 	if len(args) >= 1 {
 		var param module.QueryTxParam
 		err := json.Unmarshal([]byte(args[0]), &param)

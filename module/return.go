@@ -10,3 +10,8 @@ type ReturnErrorInfo struct {
 	Status    bool       `json:"status"`
 	ErrorList []ChanInfo `json:"errorList"`
 }
+
+type ReturnInfo struct {
+	Status bool   `json:"status"`
+	Info   string `json:"info"`
+}
