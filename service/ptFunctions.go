@@ -487,8 +487,8 @@ func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan mod
 	product.ExamTime = param.ExamTime
 	product.ExamConsequence = param.ExamConsequence
 	product.ExamOperator = param.Operator
-	// modify status 待宰状态
-	product.Status = common.STATUS["BUTCHER"]
+	// modify status 检疫状态
+	product.Status = common.STATUS["EXAM"]
 	// marshal product into state
 	jsonProduct, err := json.Marshal(product)
 	if err != nil {
@@ -619,7 +619,7 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 		return
 	}
 
-	if product.Status != common.STATUS["OUTMODULE"] {
+	if product.Status != common.STATUS["EXAM"] {
 		log.Logger.Error("goWaitButcher -- 状态不对 ，目前不是出栏状态 	prodocut:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
@@ -635,8 +635,8 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 	product.WaitButcherOperator = param.Operator
 
 	product.CurrentOwner = common.GetUserFromCertification(stub)
-	// modify status 除酸
-	product.Status = common.STATUS["BUTCHER"]
+	// modify status 待宰
+	product.Status = common.STATUS["WAITBUTCHER"]
 	// marshal product into state
 	jsonProduct, err := json.Marshal(product)
 	if err != nil {
@@ -718,7 +718,7 @@ func toButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam) (vCh
 		return
 	}
 
-	if product.Status != common.STATUS["BUTCHER"] {
+	if product.Status != common.STATUS["WAITBUTCHER"] {
 		log.Logger.Error("goButcher -- 状态不对 ，目前不是待屠宰 	prodocut:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
@@ -734,8 +734,8 @@ func toButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam) (vCh
 	product.ButcherOperator = param.Operator
 	product.HookNo = param.HookNo
 	product.CurrentOwner = common.GetUserFromCertification(stub)
-	// modify status 除酸
-	product.Status = common.STATUS["FREEZE"]
+	// modify status 屠宰
+	product.Status = common.STATUS["BUTCHER"]
 	// marshal product into state
 	jsonProduct, err := json.Marshal(product)
 	if err != nil {

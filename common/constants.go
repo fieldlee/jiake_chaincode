@@ -15,6 +15,7 @@ var ERR = map[string]string{
 var STATUS = map[string]string{
 	"INMODULE":    "inModule",
 	"OUTMODULE":   "outModule",
+	"EXAM":        "exam",
 	"WAITBUTCHER": "waitButcher",
 	"BUTCHER":     "butcher",
 	"FREEZE":      "freeze",
