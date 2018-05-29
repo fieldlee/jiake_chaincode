@@ -220,7 +220,7 @@ func (t *ProductTrace) WaitButcher(stub shim.ChaincodeStubInterface, args []stri
 			returnInfo.Success = false
 			returnInfo.Info = err.Error()
 		} else {
-			return service.Butcher(stub, paramList)
+			return service.WaitButcher(stub, paramList)
 		}
 
 	} else {
