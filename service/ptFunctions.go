@@ -631,7 +631,7 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 	product.WaitButcherTxId = stub.GetTxID()
 	product.WaitButcherMapPosition = param.MapPosition
 	product.WaitButcherOperation = param.Operation
-	product.WaitButcherTime = param.ButcherTime
+	product.WaitButcherTime = param.WaitButcherTime
 	product.WaitButcherOperator = param.Operator
 
 	product.CurrentOwner = common.GetUserFromCertification(stub)
