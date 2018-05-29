@@ -13,12 +13,13 @@ var ERR = map[string]string{
 }
 
 var STATUS = map[string]string{
-	"INModule":  "inModule",
-	"OUTModule": "outModule",
-	"BUTCHER":   "butcher",
-	"FREEZE":    "freeze",
-	"BLOCKED":   "blocked",
-	"LOST":      "lost",
+	"INMODULE":    "inModule",
+	"OUTMODULE":   "outModule",
+	"WAITBUTCHER": "waitButcher",
+	"BUTCHER":     "butcher",
+	"FREEZE":      "freeze",
+	"BLOCKED":     "blocked",
+	"LOST":        "lost",
 }
 
 const (

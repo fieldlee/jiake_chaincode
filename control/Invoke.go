@@ -31,6 +31,8 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.Exam(stub, args)
 	} else if lowFuncation == "lost" { //灭尸
 		return t.Lost(stub, args)
+	} else if lowFuncation == "waitbutcher" { //待宰
+		return t.WaitButcher(stub, args)
 	} else if lowFuncation == "butcher" { //屠宰
 		return t.Butcher(stub, args)
 	} else if lowFuncation == "querybyproduct" { //查询资产ID
@@ -196,6 +198,33 @@ func (t *ProductTrace) Save(stub shim.ChaincodeStubInterface, args []string) pee
 
 	} else {
 		log.Logger.Error("Exam:参数不对，请核实参数信息。")
+		returnInfo.Success = false
+		returnInfo.Info = "参数不对，请核实参数信息"
+	}
+	jsonreturn, err := json.Marshal(returnInfo)
+	if err != nil {
+		return shim.Error("err:" + err.Error())
+	}
+	return shim.Success(jsonreturn)
+}
+
+/**待宰**/
+func (t *ProductTrace) WaitButcher(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	log.Logger.Info("##############调用WaitButcher接口开始###############")
+	returnInfo := module.ReturnInfo{}
+	if len(args) >= 1 {
+		var paramList []module.WaitButcherParam
+		err := json.Unmarshal([]byte(args[0]), &paramList)
+		if err != nil {
+			log.Logger.Error("WaitButcher:" + err.Error())
+			returnInfo.Success = false
+			returnInfo.Info = err.Error()
+		} else {
+			return service.Butcher(stub, paramList)
+		}
+
+	} else {
+		log.Logger.Error("WaitButcher:参数不对，请核实参数信息。")
 		returnInfo.Success = false
 		returnInfo.Info = "参数不对，请核实参数信息"
 	}

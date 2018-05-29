@@ -140,7 +140,7 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 	product.CurrentOwner = common.GetUserFromCertification(stub)
 	// MODIFY STATUS
 
-	product.Status = common.STATUS["INModule"]
+	product.Status = common.STATUS["INMODULE"]
 
 	jsonByte, err := json.Marshal(product)
 	if err != nil {
@@ -220,7 +220,7 @@ func toFeed(stub shim.ChaincodeStubInterface, param module.FeedParam) (fedChan m
 		return
 	}
 
-	if product.Status != common.STATUS["INModule"] { //入栏状态
+	if product.Status != common.STATUS["INMODULE"] { //入栏状态 INModule
 		log.Logger.Error("goFeed -- 状态不对，目前不是入栏状态" + "	productid:" + param.ProductId)
 		fedChan.Status = false
 		fedChan.ErrorCode = common.ERR["STATUSERR"]
@@ -286,7 +286,7 @@ func toVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam) (vCh
 		vChan.ErrorCode = common.ERR["CHAINERR"]
 		return
 	}
-	if product.Status != common.STATUS["INModule"] { //入栏状态
+	if product.Status != common.STATUS["INMODULE"] { //入栏状态
 		log.Logger.Error("goVaccine -- 状态不对，目前不是入栏状态" + "	productid:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
@@ -359,7 +359,7 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 		return
 	}
 
-	if product.Status != common.STATUS["INModule"] {
+	if product.Status != common.STATUS["INMODULE"] {
 		log.Logger.Error("goOutput -- 状态不对，目前不是入栏状态" + "	prodocut:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
@@ -383,7 +383,7 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 	product.OutputTime = param.OutputTime
 	product.OutputOperator = param.Operator
 	// MODIFY STATUS
-	product.Status = common.STATUS["OUTModule"]
+	product.Status = common.STATUS["OUTMODULE"]
 	product.PreOwner = product.CurrentOwner
 	product.CurrentOwner = common.SYSTEM
 	// marshal product into state
@@ -468,7 +468,7 @@ func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan mod
 		return
 	}
 
-	if product.Status != common.STATUS["OUTModule"] {
+	if product.Status != common.STATUS["OUTMODULE"] {
 		log.Logger.Error("goExam -- 状态不对，目前不是已出栏	prodocut:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
@@ -541,7 +541,7 @@ func toSave(stub shim.ChaincodeStubInterface, param module.SaveParam) (vChan mod
 
 		return
 	}
-	if product.Status != common.STATUS["INModule"] { //入栏状态
+	if product.Status != common.STATUS["INMODULE"] { //入栏状态
 		log.Logger.Error("goSave -- 状态不对，目前不是入栏状态" + "	productid:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
@@ -584,6 +584,104 @@ func toSave(stub shim.ChaincodeStubInterface, param module.SaveParam) (vChan mod
 
 		return
 	}
+	vChan.Status = true
+	vChan.ErrorCode = common.ERR["NONE"]
+
+	return
+}
+
+func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherParam) (vChan module.ChanInfo) {
+
+	vChan.ProductId = param.ProductId
+	// 	verify product if exist or not
+	jsonParam, err := stub.GetState(common.PRODUCT_INFO + common.ULINE + param.ProductId)
+	if err != nil {
+		log.Logger.Error("goWaitButcher -- GetState product ERR:" + err.Error() + "	prodocut:" + param.ProductId)
+		// vChan.Status = false
+		// vChan.ErrorCode = common.ERR["CHAINERR"]
+
+		// return
+	}
+	if jsonParam == nil {
+		log.Logger.Error("goWaitButcher -- 查找不到资产，未入栏 	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["NOREGISTER"]
+		return
+	}
+
+	product := module.Product{}
+	err = json.Unmarshal(jsonParam, &product)
+	if err != nil {
+		log.Logger.Error("goWaitButcher -- Unmarshal product err:" + err.Error() + " 	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+
+		return
+	}
+
+	if product.Status != common.STATUS["OUTMODULE"] {
+		log.Logger.Error("goWaitButcher -- 状态不对 ，目前不是出栏状态 	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["STATUSERR"]
+
+		return
+	}
+
+	// create vaccine object
+	product.WaitButcherTxId = stub.GetTxID()
+	product.WaitButcherMapPosition = param.MapPosition
+	product.WaitButcherOperation = param.Operation
+	product.WaitButcherTime = param.ButcherTime
+	product.WaitButcherOperator = param.Operator
+
+	product.CurrentOwner = common.GetUserFromCertification(stub)
+	// modify status 除酸
+	product.Status = common.STATUS["BUTCHER"]
+	// marshal product into state
+	jsonProduct, err := json.Marshal(product)
+	if err != nil {
+		log.Logger.Error("goButcher -- marshal product err:" + err.Error() + " 	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+
+		return
+	}
+	err = stub.PutState(common.PRODUCT_INFO+common.ULINE+param.ProductId, jsonProduct)
+	if err != nil {
+		log.Logger.Error("goButcher -- PutState product err:" + err.Error() + " 	prodocut:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+
+		return
+	}
+
+	// ASSET CHANGE OWNER === START
+	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.PreOwner = product.PreOwner
+	changeOwner.CurrentOwner = product.CurrentOwner
+	changeOwner.ProductId = param.ProductId
+	changeOwner.Operation = param.Operation
+	changeOwner.Operator = param.Operator
+	time, err := stub.GetTxTimestamp()
+	if err != nil {
+		log.Logger.Error("goButcher -- goButcher change owner get time:" + err.Error() + "	productid:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+
+		return
+	}
+	changeOwner.OperateTime = uint64(time.GetSeconds())
+	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+
+	if err != nil {
+		log.Logger.Error("goButcher -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+
+		return
+	}
+	// ASSET CHANGE OWNER === END
 	vChan.Status = true
 	vChan.ErrorCode = common.ERR["NONE"]
 
@@ -656,33 +754,6 @@ func toButcher(stub shim.ChaincodeStubInterface, param module.ButcherParam) (vCh
 		return
 	}
 
-	// ASSET CHANGE OWNER === START
-	changeOwner := module.ChangeAssetOwner{}
-	changeOwner.PreOwner = product.PreOwner
-	changeOwner.CurrentOwner = product.CurrentOwner
-	changeOwner.ProductId = param.ProductId
-	changeOwner.Operation = param.Operation
-	changeOwner.Operator = param.Operator
-	time, err := stub.GetTxTimestamp()
-	if err != nil {
-		log.Logger.Error("goButcher -- goButcher change owner get time:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-
-		return
-	}
-	changeOwner.OperateTime = uint64(time.GetSeconds())
-	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
-	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
-
-	if err != nil {
-		log.Logger.Error("goButcher -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-
-		return
-	}
-	// ASSET CHANGE OWNER === END
 	vChan.Status = true
 	vChan.ErrorCode = common.ERR["NONE"]
 
@@ -719,7 +790,7 @@ func toLost(stub shim.ChaincodeStubInterface, param module.DestroyParam) (vChan 
 		return
 	}
 
-	if product.Status != common.STATUS["INModule"] {
+	if product.Status != common.STATUS["INMODULE"] {
 		log.Logger.Error("goLost -- 状态不对 ，目前不是入栏 	prodocut:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]

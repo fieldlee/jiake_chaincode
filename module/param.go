@@ -75,6 +75,15 @@ type OutputParam struct {
 	MapPosition string `json:"mapPosition"` //地理位置
 }
 
+// 待宰结构
+type WaitButcherParam struct {
+	ProductId       string `json:"productId"`
+	Operation       string `json:"operation"`       //出栏类型
+	Operator        string `json:"operator"`        //待宰人
+	WaitButcherTime uint64 `json:"waitButcherTime"` //待宰时间
+	MapPosition     string `json:"mapPosition"`     //地理位置
+}
+
 // 屠宰结构
 type ButcherParam struct {
 	ProductId   string `json:"productId"`

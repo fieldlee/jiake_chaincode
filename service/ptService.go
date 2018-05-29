@@ -173,6 +173,27 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 	return shim.Success(jsonReturn)
 }
 
+/**待宰**/
+func WaitButcher(stub shim.ChaincodeStubInterface, paramList []module.WaitButcherParam) peer.Response {
+	// 	获得chan 返回的值
+	returnError := module.ReturnErrorInfo{}
+	for i, v := range paramList {
+		log.Logger.Info("WaitButcher --range:" + strconv.Itoa(i))
+		tChan := toWaitButcher(stub, v)
+		if tChan.Status == false {
+			returnError.ErrorList = append(returnError.ErrorList, tChan)
+		}
+	}
+
+	if len(returnError.ErrorList) >= 1 {
+		returnError.Success = false
+	} else {
+		returnError.Success = true
+	}
+	jsonReturn, _ := json.Marshal(returnError)
+	return shim.Success(jsonReturn)
+}
+
 /**屠宰**/
 func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) peer.Response {
 	// 	获得chan 返回的值

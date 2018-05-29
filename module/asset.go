@@ -39,6 +39,12 @@ type Product struct {
 	ExamTime        uint64 `json:"examTime"`        //防疫时间
 	ExamConsequence string `json:"examConsequence"` //防疫结果
 	ExamMapPosition string `json:"examMapPosition"` // 地理位置
+	// 待宰
+	WaitButcherTxId        string `json:"waitButcherTxId"`
+	WaitButcherOperation   string `json:"waitButcherOperation"`   //待宰类型
+	WaitButcherOperator    string `json:"waitButcherOperator"`    //待宰人
+	WaitButcherTime        uint64 `json:"waitButcherTime"`        //待宰时间
+	WaitButcherMapPosition string `json:"waitButcherMapPosition"` //地理位置
 	// 屠宰
 	ButcherTxId        string `json:"butcherTxId"`
 	HookNo             string `json:"hookNo"`             //挂钩号码
