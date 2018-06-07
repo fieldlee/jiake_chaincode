@@ -2,6 +2,7 @@ package control
 
 import (
 	"encoding/json"
+	"jiakechaincode/common"
 	"jiakechaincode/log"
 	"jiakechaincode/module"
 	"jiakechaincode/service"
@@ -426,4 +427,13 @@ func (t *ProductTrace) QueryByTX(stub shim.ChaincodeStubInterface, args []string
 		return shim.Error("err:" + err.Error())
 	}
 	return shim.Success(jsonreturn)
+}
+
+/**查询交易**/
+func (t *ProductTrace) QueryTXCount(stub shim.ChaincodeStubInterface) peer.Response {
+	countByts, err := stub.GetState(common.TX_COUNT)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success(countByts)
 }

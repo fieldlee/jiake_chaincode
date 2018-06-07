@@ -389,15 +389,6 @@ func QueryByTX(stub shim.ChaincodeStubInterface, param module.QueryTxParam) peer
 	return shim.Success(resultsJSON)
 }
 
-/**查询交易**/
-func QueryTXCount(stub shim.ChaincodeStubInterface) peer.Response {
-	countByts, err := stub.GetState(common.TX_COUNT)
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	return shim.Success(countByts)
-}
-
 func recordTxNumber(stub shim.ChaincodeStubInterface, num int) {
 	// 记录tx count number
 	countByts, err := stub.GetState(common.TX_COUNT)
