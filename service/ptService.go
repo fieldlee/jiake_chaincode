@@ -403,7 +403,7 @@ func recordTxNumber(stub shim.ChaincodeStubInterface, num int) {
 	countByts, err := stub.GetState(common.TX_COUNT)
 	if err != nil {
 		txCount := module.TxCount{}
-		txCount.Count = num
+		txCount.Count = uint64(num)
 		txBytes, _ := json.Marshal(txCount)
 		_ = stub.PutState(common.TX_COUNT, txBytes)
 	} else {
@@ -412,7 +412,7 @@ func recordTxNumber(stub shim.ChaincodeStubInterface, num int) {
 		if err != nil {
 
 		} else {
-			txCount.Count = txCount.Count + num
+			txCount.Count = txCount.Count + uint64(num)
 			txBytes, _ := json.Marshal(txCount)
 			_ = stub.PutState(common.TX_COUNT, txBytes)
 		}
