@@ -396,18 +396,18 @@ func recordTxNumber(stub shim.ChaincodeStubInterface, num int) {
 	if err != nil {
 		fmt.Println("err.Error()1:")
 		fmt.Println(err.Error())
-		txCount := module.TxCount{}
+		var txCount module.TxCount
 		txCount.Count = uint64(num)
 		txBytes, _ := json.Marshal(txCount)
 		fmt.Println(txCount)
 		_ = stub.PutState(common.TX_COUNT+common.ULINE+common.TX_NUMBER, txBytes)
 	} else {
-		txCount := module.TxCount{}
+		txCount := module.TxCount{Count: 0}
 		err = json.Unmarshal(countByts, &txCount)
 		fmt.Println("err.Error()2:")
 		fmt.Println(err.Error())
 		if err != nil {
-			txInfo := module.TxCount{}
+			var txInfo module.TxCount
 			txInfo.Count = uint64(num)
 			txInfoBytes, _ := json.Marshal(txInfo)
 			fmt.Println(txInfo)
