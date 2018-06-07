@@ -139,7 +139,6 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 	product.PreOwner = common.SYSTEM
 	product.CurrentOwner = common.GetUserFromCertification(stub)
 	// MODIFY STATUS
-
 	product.Status = common.STATUS["INMODULE"]
 
 	jsonByte, err := json.Marshal(product)
@@ -164,6 +163,7 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 	changeOwner := module.ChangeAssetOwner{}
 	changeOwner.PreOwner = common.SYSTEM
 	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
+	changeOwner.MapPosition = param.MapPosition
 	changeOwner.ProductId = param.ProductId
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
@@ -410,6 +410,7 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 	changeOwner.PreOwner = common.GetUserFromCertification(stub)
 	changeOwner.CurrentOwner = common.SYSTEM
 	changeOwner.ProductId = param.ProductId
+	changeOwner.MapPosition = param.MapPosition
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
 	time, err := stub.GetTxTimestamp()
@@ -417,7 +418,6 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 		log.Logger.Error("goOutput -- goOutput change owner get time:" + err.Error() + "	productid:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["CHAINERR"]
-
 		return
 	}
 	changeOwner.OperateTime = uint64(time.GetSeconds())
@@ -428,7 +428,6 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 		log.Logger.Error("goOutput -- PutState change owner:" + err.Error() + "	productid:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["CHAINERR"]
-
 		return
 	}
 	// ASSET CHANGE OWNER === END
@@ -659,6 +658,7 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 	changeOwner := module.ChangeAssetOwner{}
 	changeOwner.PreOwner = product.PreOwner
 	changeOwner.CurrentOwner = product.CurrentOwner
+	changeOwner.MapPosition = param.MapPosition
 	changeOwner.ProductId = param.ProductId
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
@@ -832,6 +832,7 @@ func toLost(stub shim.ChaincodeStubInterface, param module.DestroyParam) (vChan 
 	changeOwner := module.ChangeAssetOwner{}
 	changeOwner.PreOwner = product.PreOwner
 	changeOwner.CurrentOwner = product.CurrentOwner
+	changeOwner.MapPosition = param.MapPosition
 	changeOwner.ProductId = param.ProductId
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator

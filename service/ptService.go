@@ -277,6 +277,36 @@ func QueryHistoryByProduct(stub shim.ChaincodeStubInterface, param module.QueryP
 	return shim.Success(resultsJSON)
 }
 
+/**查询交易历史**/
+func QueryTransferHistoryByProduct(stub shim.ChaincodeStubInterface, param module.QueryParam) peer.Response {
+	historys, err := stub.GetHistoryForKey(common.PRODUCT_TRANSFER + common.ULINE + param.ProductId)
+	if err != nil {
+		log.Logger.Error("QueryHistoryByProduct err:" + err.Error())
+		return shim.Error(err.Error())
+	}
+	defer historys.Close()
+	results := make([]module.ChangeAssetOwner, 0)
+	for historys.HasNext() {
+		result, err := historys.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		changeAsset := module.ChangeAssetOwner{}
+
+		err = json.Unmarshal(result.Value, &changeAsset)
+		if err != nil {
+			return shim.Error(err.Error())
+		} else {
+			results = append(results, changeAsset)
+		}
+	}
+	resultsJSON, err := json.Marshal(results)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success(resultsJSON)
+}
+
 /**查询批次**/
 func QueryBatchByProduct(stub shim.ChaincodeStubInterface, param module.BatchParam) peer.Response {
 	queryString := fmt.Sprintf("{\"selector\": {\"_id\": {\"$regex\": \"%s\"},\"batchNumber\":\"%s\"},\"limit\":\"%d\"}", common.PRODUCT_INFO, param.BatchNumber, 5000)

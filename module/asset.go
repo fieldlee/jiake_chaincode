@@ -102,6 +102,7 @@ type ChangeAssetOwner struct {
 	Operation    string `json:"operation"`
 	Operator     string `json:"operator"`
 	OperateTime  uint64 `json:"operateTime"`
+	MapPosition  string `json:"mapPosition"`
 	PreOwner     string `json:"preOwner"`
 	CurrentOwner string `json:"currentOwner"`
 }

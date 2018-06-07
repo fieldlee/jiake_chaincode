@@ -43,6 +43,8 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.QueryByTX(stub, args)
 	} else if lowFuncation == "querybatchbyproduct" { //查询批次ID
 		return t.QueryBatchByProduct(stub, args)
+	} else if lowFuncation == "querytransfer" { //查询transfer 历史信息
+		return t.QueryTransferHistoryByProduct(stub, args)
 	}
 	return shim.Error("Invalid invoke function name. " + funcation)
 }
@@ -333,6 +335,33 @@ func (t *ProductTrace) QueryHistoryByProduct(stub shim.ChaincodeStubInterface, a
 
 	} else {
 		log.Logger.Error("QueryByProduct:参数不对，请核实参数信息。")
+		returnInfo.Success = false
+		returnInfo.Info = "参数不对，请核实参数信息"
+	}
+	jsonreturn, err := json.Marshal(returnInfo)
+	if err != nil {
+		return shim.Error("err:" + err.Error())
+	}
+	return shim.Success(jsonreturn)
+}
+
+/**查询交易历史产品**/
+func (t *ProductTrace) QueryTransferHistoryByProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	log.Logger.Info("##############调用QueryTRANSFERHistoryproduct接口开始###############")
+	returnInfo := module.ReturnInfo{}
+	if len(args) >= 1 {
+		var param module.QueryParam
+		err := json.Unmarshal([]byte(args[0]), &param)
+		if err != nil {
+			log.Logger.Error("QueryTransferHistoryByProduct:err:" + err.Error())
+			returnInfo.Success = false
+			returnInfo.Info = err.Error()
+		} else {
+			return service.QueryTransferHistoryByProduct(stub, param)
+		}
+
+	} else {
+		log.Logger.Error("QueryTransferHistoryByProduct:参数不对，请核实参数信息。")
 		returnInfo.Success = false
 		returnInfo.Info = "参数不对，请核实参数信息"
 	}
