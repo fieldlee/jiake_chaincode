@@ -2,6 +2,7 @@ package control
 
 import (
 	"encoding/json"
+	"fmt"
 	"jiakechaincode/common"
 	"jiakechaincode/log"
 	"jiakechaincode/module"
@@ -47,6 +48,7 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	} else if lowFuncation == "querytransfer" { //查询transfer 历史信息
 		return t.QueryTransferHistoryByProduct(stub, args)
 	} else if lowFuncation == "querytxcount" { //查询tx 总数
+		fmt.Println(lowFuncation)
 		return t.QueryTXCount(stub)
 	}
 	return shim.Error("Invalid invoke function name. " + funcation)
@@ -432,7 +434,9 @@ func (t *ProductTrace) QueryByTX(stub shim.ChaincodeStubInterface, args []string
 /**查询交易**/
 func (t *ProductTrace) QueryTXCount(stub shim.ChaincodeStubInterface) peer.Response {
 	countByts, err := stub.GetState(common.TX_COUNT)
+	fmt.Println(countByts)
 	if err != nil {
+		fmt.Println(err.Error())
 		return shim.Error(err.Error())
 	}
 	return shim.Success(countByts)
