@@ -18,7 +18,7 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 
 	funcation, args := stub.GetFunctionAndParameters()
 	lowFuncation := strings.ToLower(funcation)
-
+	log.Logger.Info("lowFuncation", lowFuncation)
 	if lowFuncation == "register" { //入栏
 		return t.Register(stub, args)
 	} else if lowFuncation == "feed" { //喂养
