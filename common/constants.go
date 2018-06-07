@@ -30,7 +30,8 @@ const (
 	UNCOMFIRM = "UNCONFIRM"
 
 	//tx 总数
-	TX_COUNT = "TX_NUMBER_AMOUNT"
+	TX_COUNT  = "TX_NUMBER_AMOUNT"
+	TX_NUMBER = "12345678"
 	//产品注册所属
 	SYSTEM = "None"
 	//产品所属KEY

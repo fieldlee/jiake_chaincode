@@ -433,7 +433,7 @@ func (t *ProductTrace) QueryByTX(stub shim.ChaincodeStubInterface, args []string
 
 /**查询交易**/
 func (t *ProductTrace) QueryTXCount(stub shim.ChaincodeStubInterface) peer.Response {
-	countByts, err := stub.GetState(common.TX_COUNT)
+	countByts, err := stub.GetState(common.TX_COUNT + common.ULINE + common.TX_NUMBER)
 	fmt.Println(countByts)
 	if err != nil {
 		fmt.Println(err.Error())
