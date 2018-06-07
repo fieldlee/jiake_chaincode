@@ -106,3 +106,8 @@ type ChangeAssetOwner struct {
 	PreOwner     string `json:"preOwner"`
 	CurrentOwner string `json:"currentOwner"`
 }
+
+// tx count
+type TxCount struct {
+	Count uint64 `json:"count"`
+}

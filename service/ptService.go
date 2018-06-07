@@ -16,8 +16,12 @@ import (
 
 /**产品注册信息**/
 func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
+
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
+
 	for i, v := range paramList {
 		log.Logger.Info("Register --- send :" + strconv.Itoa(i))
 		log.Logger.Info("Register --- send :" + v.ProductId)
@@ -73,6 +77,10 @@ func Register(stub shim.ChaincodeStubInterface, paramList []module.RegitserParam
 
 /**喂养上链**/
 func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.Response {
+
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
+
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -94,6 +102,8 @@ func Feed(stub shim.ChaincodeStubInterface, paramList []module.FeedParam) peer.R
 
 /**防疫信息上链**/
 func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -114,6 +124,8 @@ func Vaccine(stub shim.ChaincodeStubInterface, paramList []module.VaccineParam) 
 
 /**出栏操作**/
 func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -134,6 +146,8 @@ func Output(stub shim.ChaincodeStubInterface, paramList []module.OutputParam) pe
 
 /**检疫**/
 func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -155,6 +169,8 @@ func Exam(stub shim.ChaincodeStubInterface, paramList []module.ExamParam) peer.R
 
 /**救治**/
 func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -175,6 +191,8 @@ func Save(stub shim.ChaincodeStubInterface, paramList []module.SaveParam) peer.R
 
 /**待宰**/
 func WaitButcher(stub shim.ChaincodeStubInterface, paramList []module.WaitButcherParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -196,6 +214,8 @@ func WaitButcher(stub shim.ChaincodeStubInterface, paramList []module.WaitButche
 
 /**屠宰**/
 func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -217,6 +237,8 @@ func Butcher(stub shim.ChaincodeStubInterface, paramList []module.ButcherParam) 
 
 /**灭尸**/
 func Lost(stub shim.ChaincodeStubInterface, paramList []module.DestroyParam) peer.Response {
+	// 记录tx count number
+	recordTxNumber(stub, len(paramList))
 	// 	获得chan 返回的值
 	returnError := module.ReturnErrorInfo{}
 	for i, v := range paramList {
@@ -365,4 +387,34 @@ func QueryByTX(stub shim.ChaincodeStubInterface, param module.QueryTxParam) peer
 		return shim.Error(err.Error())
 	}
 	return shim.Success(resultsJSON)
+}
+
+/**查询交易**/
+func QueryTXCount(stub shim.ChaincodeStubInterface) peer.Response {
+	countByts, err := stub.GetState(common.TX_COUNT)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	return shim.Success(countByts)
+}
+
+func recordTxNumber(stub shim.ChaincodeStubInterface, num int) {
+	// 记录tx count number
+	countByts, err := stub.GetState(common.TX_COUNT)
+	if err != nil {
+		txCount := module.TxCount{}
+		txCount.Count = num
+		txBytes, _ := json.Marshal(txCount)
+		_ = stub.PutState(common.TX_COUNT, txBytes)
+	} else {
+		txCount := module.TxCount{}
+		err = json.Unmarshal(countByts, &txCount)
+		if err != nil {
+
+		} else {
+			txCount.Count = txCount.Count + num
+			txBytes, _ := json.Marshal(txCount)
+			_ = stub.PutState(common.TX_COUNT, txBytes)
+		}
+	}
 }
