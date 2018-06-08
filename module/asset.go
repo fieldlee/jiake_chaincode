@@ -98,6 +98,7 @@ type Save struct {
 }
 
 type ChangeAssetOwner struct {
+	TxId         string `json:"txId"`
 	ProductId    string `json:"productId"`
 	Operation    string `json:"operation"`
 	Operator     string `json:"operator"`

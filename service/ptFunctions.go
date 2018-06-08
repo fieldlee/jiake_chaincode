@@ -161,6 +161,7 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 
 	// asset transcation
 	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
 	changeOwner.PreOwner = common.SYSTEM
 	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
 	changeOwner.MapPosition = param.MapPosition
@@ -407,6 +408,7 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 
 	// ASSET CHANGE OWNER === START
 	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
 	changeOwner.PreOwner = common.GetUserFromCertification(stub)
 	changeOwner.CurrentOwner = common.SYSTEM
 	changeOwner.ProductId = param.ProductId
@@ -656,6 +658,7 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 
 	// ASSET CHANGE OWNER === START
 	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
 	changeOwner.PreOwner = product.PreOwner
 	changeOwner.CurrentOwner = product.CurrentOwner
 	changeOwner.MapPosition = param.MapPosition
@@ -830,6 +833,7 @@ func toLost(stub shim.ChaincodeStubInterface, param module.DestroyParam) (vChan 
 
 	// ASSET CHANGE OWNER === START
 	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
 	changeOwner.PreOwner = product.PreOwner
 	changeOwner.CurrentOwner = product.CurrentOwner
 	changeOwner.MapPosition = param.MapPosition
