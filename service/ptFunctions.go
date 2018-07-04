@@ -620,11 +620,10 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 		return
 	}
 
-	if product.Status != common.STATUS["EXAM"] || product.Status != common.STATUS["OUTMODULE"] {
+	if !(product.Status == common.STATUS["EXAM"] || product.Status == common.STATUS["OUTMODULE"]) {
 		log.Logger.Error("goWaitButcher -- 状态不对 ，目前不是出栏状态 	prodocut:" + param.ProductId)
 		vChan.Status = false
 		vChan.ErrorCode = common.ERR["STATUSERR"]
-
 		return
 	}
 
