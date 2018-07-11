@@ -168,15 +168,15 @@ func toRegister(stub shim.ChaincodeStubInterface, param module.RegitserParam) (t
 	changeOwner.ProductId = param.ProductId
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
-	time, err := stub.GetTxTimestamp()
-	if err != nil {
-		log.Logger.Error("goRegister -- register change owner get time:" + err.Error() + "	productid:" + param.ProductId)
-		tChan.Status = false
-		tChan.ErrorCode = common.ERR["CHAINERR"]
+	// time, err := stub.GetTxTimestamp()
+	// if err != nil {
+	// 	log.Logger.Error("goRegister -- register change owner get time:" + err.Error() + "	productid:" + param.ProductId)
+	// 	tChan.Status = false
+	// 	tChan.ErrorCode = common.ERR["CHAINERR"]
 
-		return
-	}
-	changeOwner.OperateTime = uint64(time.GetSeconds())
+	// 	return
+	// }
+	changeOwner.OperateTime = param.CreateTime
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
@@ -415,14 +415,14 @@ func toOutput(stub shim.ChaincodeStubInterface, param module.OutputParam) (vChan
 	changeOwner.MapPosition = param.MapPosition
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
-	time, err := stub.GetTxTimestamp()
-	if err != nil {
-		log.Logger.Error("goOutput -- goOutput change owner get time:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
-		return
-	}
-	changeOwner.OperateTime = uint64(time.GetSeconds())
+	// time, err := stub.GetTxTimestamp()
+	// if err != nil {
+	// 	log.Logger.Error("goOutput -- goOutput change owner get time:" + err.Error() + "	productid:" + param.ProductId)
+	// 	vChan.Status = false
+	// 	vChan.ErrorCode = common.ERR["CHAINERR"]
+	// 	return
+	// }
+	changeOwner.OperateTime = param.OutputTime
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
@@ -664,15 +664,15 @@ func toWaitButcher(stub shim.ChaincodeStubInterface, param module.WaitButcherPar
 	changeOwner.ProductId = param.ProductId
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
-	time, err := stub.GetTxTimestamp()
-	if err != nil {
-		log.Logger.Error("goButcher -- goButcher change owner get time:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
+	// time, err := stub.GetTxTimestamp()
+	// if err != nil {
+	// 	log.Logger.Error("goButcher -- goButcher change owner get time:" + err.Error() + "	productid:" + param.ProductId)
+	// 	vChan.Status = false
+	// 	vChan.ErrorCode = common.ERR["CHAINERR"]
 
-		return
-	}
-	changeOwner.OperateTime = uint64(time.GetSeconds())
+	// 	return
+	// }
+	changeOwner.OperateTime = param.WaitButcherTime
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
@@ -839,15 +839,15 @@ func toLost(stub shim.ChaincodeStubInterface, param module.DestroyParam) (vChan 
 	changeOwner.ProductId = param.ProductId
 	changeOwner.Operation = param.Operation
 	changeOwner.Operator = param.Operator
-	time, err := stub.GetTxTimestamp()
-	if err != nil {
-		log.Logger.Error("goLost -- goButcher change owner get time:" + err.Error() + "	productid:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["CHAINERR"]
+	// time, err := stub.GetTxTimestamp()
+	// if err != nil {
+	// 	log.Logger.Error("goLost -- goButcher change owner get time:" + err.Error() + "	productid:" + param.ProductId)
+	// 	vChan.Status = false
+	// 	vChan.ErrorCode = common.ERR["CHAINERR"]
 
-		return
-	}
-	changeOwner.OperateTime = uint64(time.GetSeconds())
+	// 	return
+	// }
+	changeOwner.OperateTime = param.LostTime
 	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
 	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
 
