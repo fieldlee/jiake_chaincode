@@ -530,7 +530,7 @@ func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan mod
 	product.ExamConsequence = param.ExamConsequence
 	product.ExamOperator = param.Operator
 	// modify status 检疫状态
-	product.Status = common.STATUS["EXAM"]
+	// product.Status = common.STATUS["EXAM"]
 	// marshal product into state
 	jsonProduct, err := json.Marshal(product)
 	if err != nil {
