@@ -256,6 +256,26 @@ func toFeed(stub shim.ChaincodeStubInterface, param module.FeedParam) (fedChan m
 		fedChan.ErrorCode = common.ERR["CHAINERR"]
 		return
 	}
+
+	// 	资产流转
+	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
+	changeOwner.PreOwner = common.SYSTEM
+	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
+	changeOwner.MapPosition = param.MapPosition
+	changeOwner.ProductId = param.ProductId
+	changeOwner.Operation = param.Operation
+	changeOwner.Operator = param.Operator
+	changeOwner.OperateTime = param.FeedTime
+	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+
+	if err != nil {
+		fedChan.Status = false
+		fedChan.ErrorCode = common.ERR["CHAINERR"]
+		return
+	}
+
 	fedChan.Status = true
 	fedChan.ErrorCode = common.ERR["NONE"]
 	return
@@ -325,6 +345,25 @@ func toVaccine(stub shim.ChaincodeStubInterface, param module.VaccineParam) (vCh
 		vChan.ErrorCode = common.ERR["CHAINERR"]
 		return
 	}
+
+	// 	资产流转
+	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
+	changeOwner.PreOwner = common.SYSTEM
+	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
+	changeOwner.MapPosition = param.MapPosition
+	changeOwner.ProductId = param.ProductId
+	changeOwner.Operation = param.Operation
+	changeOwner.Operator = param.Operator
+	changeOwner.OperateTime = param.VaccineTime
+	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	if err != nil {
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		return
+	}
+
 	vChan.Status = true
 	vChan.ErrorCode = common.ERR["NONE"]
 	return
@@ -509,6 +548,25 @@ func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan mod
 
 		return
 	}
+
+	// 	资产流转
+	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
+	changeOwner.PreOwner = product.PreOwner
+	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
+	changeOwner.MapPosition = param.MapPosition
+	changeOwner.ProductId = param.ProductId
+	changeOwner.Operation = param.Operation
+	changeOwner.Operator = param.Operator
+	changeOwner.OperateTime = param.ExamTime
+	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	if err != nil {
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		return
+	}
+
 	vChan.Status = true
 	vChan.ErrorCode = common.ERR["NONE"]
 
@@ -587,6 +645,25 @@ func toSave(stub shim.ChaincodeStubInterface, param module.SaveParam) (vChan mod
 
 		return
 	}
+
+	// 	资产流转
+	changeOwner := module.ChangeAssetOwner{}
+	changeOwner.TxId = stub.GetTxID()
+	changeOwner.PreOwner = product.PreOwner
+	changeOwner.CurrentOwner = common.GetUserFromCertification(stub)
+	changeOwner.MapPosition = param.MapPosition
+	changeOwner.ProductId = param.ProductId
+	changeOwner.Operation = param.Operation
+	changeOwner.Operator = param.Operator
+	changeOwner.OperateTime = param.SaveTime
+	jsonchangeOwnerBytes, err := json.Marshal(changeOwner)
+	err = stub.PutState(common.PRODUCT_TRANSFER+common.ULINE+param.ProductId, jsonchangeOwnerBytes)
+	if err != nil {
+		vChan.Status = false
+		vChan.ErrorCode = common.ERR["CHAINERR"]
+		return
+	}
+
 	vChan.Status = true
 	vChan.ErrorCode = common.ERR["NONE"]
 
