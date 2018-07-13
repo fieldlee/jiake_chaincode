@@ -469,13 +469,15 @@ func toExam(stub shim.ChaincodeStubInterface, param module.ExamParam) (vChan mod
 		return
 	}
 
-	if product.Status != common.STATUS["OUTMODULE"] {
-		log.Logger.Error("goExam -- 状态不对，目前不是已出栏	prodocut:" + param.ProductId)
-		vChan.Status = false
-		vChan.ErrorCode = common.ERR["STATUSERR"]
+	/////=================去除检疫检查已出栏状态=================
+	// if product.Status != common.STATUS["OUTMODULE"] {
+	// 	log.Logger.Error("goExam -- 状态不对，目前不是已出栏	prodocut:" + param.ProductId)
+	// 	vChan.Status = false
+	// 	vChan.ErrorCode = common.ERR["STATUSERR"]
 
-		return
-	}
+	// 	return
+	// }
+
 	// ExamOperation   string `json:"examOperation"`   //检疫类型
 	// ExamOperator    string `json:"examOperator"`    //检疫人
 	// ExamTime        string `json:"examTime"`        //防疫时间
