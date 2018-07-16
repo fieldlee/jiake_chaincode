@@ -404,6 +404,33 @@ func (t *ProductTrace) QueryBatchByProduct(stub shim.ChaincodeStubInterface, arg
 	return shim.Success(jsonreturn)
 }
 
+/**查询批次产品**/
+func (t *ProductTrace) QueryProductsByBatch(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	log.Logger.Info("##############调用QueryProductsByBatch接口开始###############")
+	returnInfo := module.ReturnInfo{}
+	if len(args) >= 1 {
+		var param module.SearchProductParam
+		err := json.Unmarshal([]byte(args[0]), &param)
+		if err != nil {
+			log.Logger.Error("QueryProductsByBatch:err:" + err.Error())
+			returnInfo.Success = false
+			returnInfo.Info = err.Error()
+		} else {
+			return service.QueryProductsByBatch(stub, param)
+		}
+
+	} else {
+		log.Logger.Error("QueryProductsByBatch:参数不对，请核实参数信息。")
+		returnInfo.Success = false
+		returnInfo.Info = "参数不对，请核实参数信息"
+	}
+	jsonreturn, err := json.Marshal(returnInfo)
+	if err != nil {
+		return shim.Error("err:" + err.Error())
+	}
+	return shim.Success(jsonreturn)
+}
+
 /**查询交易产品**/
 func (t *ProductTrace) QueryByTX(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	log.Logger.Info("##############QueryByTX###############")

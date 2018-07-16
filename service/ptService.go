@@ -334,8 +334,8 @@ func QueryTransferHistoryByProduct(stub shim.ChaincodeStubInterface, param modul
 	return shim.Success(resultsJSON)
 }
 
-/**查询批次**/
-func QueryBatchByProduct(stub shim.ChaincodeStubInterface, param module.BatchParam) peer.Response {
+/**查询产品按照批次**/
+func QueryProductsByBatch(stub shim.ChaincodeStubInterface, param module.BatchParam) peer.Response {
 	queryString := fmt.Sprintf("{\"selector\": {\"_id\": {\"$regex\": \"%s\"},\"batchNumber\":\"%s\"},\"limit\":\"%d\"}", common.PRODUCT_INFO, param.BatchNumber, 5000)
 	queryResults, err := stub.GetQueryResult(queryString)
 	if err != nil {
