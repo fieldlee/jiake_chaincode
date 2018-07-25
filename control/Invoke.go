@@ -43,8 +43,8 @@ func (t *ProductTrace) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 		return t.QueryHistoryByProduct(stub, args)
 	} else if lowFuncation == "querybytx" { //查询交易ID
 		return t.QueryByTX(stub, args)
-	} else if lowFuncation == "querybatchbyproduct" { //查询批次ID
-		return t.QueryBatchByProduct(stub, args)
+		// } else if lowFuncation == "querybatchbyproduct" { //查询批次ID
+		// 	return t.QueryBatchByProduct(stub, args)
 	} else if lowFuncation == "querytransfer" { //查询transfer 历史信息
 		return t.QueryTransferHistoryByProduct(stub, args)
 	} else if lowFuncation == "querytxcount" { //查询tx 总数
